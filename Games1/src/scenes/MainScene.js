@@ -95,12 +95,7 @@ export class MainScene extends Scene {
         this.enemy_blue.update();
 
         // Player movement entries
-        if (this.cursors.up.isDown) {
-            this.player.move("up");
-        }
-        if (this.cursors.down.isDown) {
-            this.player.move("down");
-        }
-
+        if (this.cursors.up.isDown) this.player.move("up");
+        if (this.cursors.down.isDown) this.player.move("down");
     }
 }

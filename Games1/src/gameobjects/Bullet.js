@@ -10,6 +10,7 @@ export class Bullet extends GameObjects.Image {
         this.speed = Phaser.Math.GetSpeed(450, 1);
         this.postFX.addBloom(0xffffff, 1, 1, 2, 1.2);
         // Default bullet (player bullet)
+
         this.name = "bullet";
     }
 
