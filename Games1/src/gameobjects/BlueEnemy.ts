@@ -1,22 +1,23 @@
+import type {Scene} from "phaser";
 import {Math, Physics} from "phaser";
-import {Bullet} from "./Bullet";
+import {Bullet} from "./Bullet.js";
 
 export class BlueEnemy extends Physics.Arcade.Sprite {
-    scene = null;
+    scene!: Scene;
     animation_is_playing = false;
     damage_life_point = 3;
     scale_damage = 4;
-    up_down_tween = null;
+    up_down_tween!: Phaser.Tweens.Tween;
 
-    bullets = null;
+    bullets!: Phaser.Physics.Arcade.Group;
 
-    constructor(scene) {
+    constructor(scene: Scene) {
         super(scene, scene.scale.width + 150, scene.scale.height - 100, "enemy-blue");
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.setScale(4);
-        this.body.setSize(15, 15);
+        this.body!.setSize(15, 15);
 
         this.up_down_tween = this.scene.tweens.add({
             targets: this,
@@ -50,7 +51,7 @@ export class BlueEnemy extends Physics.Arcade.Sprite {
         });
     }
 
-    damage(player_x, player_y) {
+    damage(player_x: number, player_y: number) {
         const bullet = this.bullets.get();
         if (bullet) {
             bullet.fire(this.x, this.y, player_x, player_y, "enemy-bullet");
@@ -79,8 +80,8 @@ export class BlueEnemy extends Physics.Arcade.Sprite {
         // Add more difficulty
         this.up_down_tween.timeScale = 1 + (3 - this.scale_damage) / 2;
         if (this.scale_damage === 1) {
-            this.up_down_tween.easing = "Power2";
-            this.up_down_tween.x = 10;
+            (this.up_down_tween as any).easing = "Power2";
+            (this.up_down_tween as any).x = 10;
         }
 
     }
