@@ -4,7 +4,7 @@ import {Bullet} from "./Bullet.js";
 export class Player extends Physics.Arcade.Image {
 
     // Player states: waiting, start, can_move
-    state = "waiting";
+    state: "waiting" | "start" | "can_move" = "waiting";
     propulsion_fire!: Phaser.GameObjects.Sprite;
     scene!: Scene;
     bullets!: Phaser.Physics.Arcade.Group;
@@ -79,7 +79,7 @@ export class Player extends Physics.Arcade.Image {
         }
     }
 
-    fire(x, y) {
+    fire(x?: number, y?: number) {
         if (this.state === "can_move") {
             // Create bullet
             const bullet = this.bullets.get();
