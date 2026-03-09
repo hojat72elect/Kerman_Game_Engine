@@ -1,6 +1,13 @@
 import {Scene} from 'phaser';
 
 export class ClickerGame extends Scene {
+
+    score: number = 0;
+    coins: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody[] = [];
+    scoreText!: Phaser.GameObjects.Text;
+    timeText!: Phaser.GameObjects.Text;
+    timer!: Phaser.Time.TimerEvent;
+
     constructor() {
         super('ClickerGame');
     }
@@ -10,14 +17,20 @@ export class ClickerGame extends Scene {
 
         this.coins = [];
 
-        const textStyle = {fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff', stroke: '#000000', strokeThickness: 8};
+        const textStyle = {
+            fontFamily: 'Arial Black',
+            fontSize: 38,
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 8
+        };
 
         this.add.image(512, 384, 'background');
 
         this.scoreText = this.add.text(32, 32, 'Coins: 0', textStyle).setDepth(1);
         this.timeText = this.add.text(1024 - 32, 32, 'Time: 10', textStyle).setOrigin(1, 0).setDepth(1);
 
-        //  Our 10 second timer. It starts automatically when the scene is created.
+        //  Our 10 seconds timer. It starts automatically when the scene is created.
         this.timer = this.time.addEvent({delay: 10000, callback: () => this.gameOver()});
 
         this.physics.world.setBounds(0, -400, 1024, 768 + 310);
@@ -26,7 +39,7 @@ export class ClickerGame extends Scene {
             this.dropCoin();
         }
 
-        this.input.on('gameobjectdown', (pointer, gameObject) => this.clickCoin(gameObject));
+        this.input.on('gameobjectdown', (_: any, gameObject: any) => this.clickCoin(gameObject));
     }
 
     dropCoin() {
@@ -43,7 +56,7 @@ export class ClickerGame extends Scene {
         this.coins.push(coin);
     }
 
-    clickCoin(coin) {
+    clickCoin(coin: any) {
         //  Disable the coin from being clicked
         coin.disableInteractive();
 
