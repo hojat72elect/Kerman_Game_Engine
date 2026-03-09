@@ -1,8 +1,8 @@
-import {Preloader} from './Preloader';
-import {Play} from './Play';
+import {Preloader} from './Preloader.js';
+import {Play} from './Play.js';
 import Phaser from 'phaser';
 
-const config = {
+const config : Phaser.Types.Core.GameConfig = {
     title: 'Card Memory Game',
     type: Phaser.AUTO,
     width: 549,
