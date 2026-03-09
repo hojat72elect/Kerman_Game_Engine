@@ -1,19 +1,16 @@
-import { Scene } from 'phaser';
+import {Scene} from 'phaser';
 
-export class ClickerGame extends Scene
-{
-    constructor ()
-    {
+export class ClickerGame extends Scene {
+    constructor() {
         super('ClickerGame');
     }
 
-    create ()
-    {
+    create() {
         this.score = 0;
 
         this.coins = [];
 
-        const textStyle = { fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff', stroke: '#000000', strokeThickness: 8 };
+        const textStyle = {fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff', stroke: '#000000', strokeThickness: 8};
 
         this.add.image(512, 384, 'background');
 
@@ -21,20 +18,18 @@ export class ClickerGame extends Scene
         this.timeText = this.add.text(1024 - 32, 32, 'Time: 10', textStyle).setOrigin(1, 0).setDepth(1);
 
         //  Our 10 second timer. It starts automatically when the scene is created.
-        this.timer = this.time.addEvent({ delay: 10000, callback: () => this.gameOver() });
+        this.timer = this.time.addEvent({delay: 10000, callback: () => this.gameOver()});
 
         this.physics.world.setBounds(0, -400, 1024, 768 + 310);
 
-        for (let i = 0; i < 32; i++)
-        {
+        for (let i = 0; i < 32; i++) {
             this.dropCoin();
         }
 
         this.input.on('gameobjectdown', (pointer, gameObject) => this.clickCoin(gameObject));
     }
 
-    dropCoin ()
-    {
+    dropCoin() {
         const x = Phaser.Math.Between(128, 896);
         const y = Phaser.Math.Between(0, -400);
 
@@ -48,8 +43,7 @@ export class ClickerGame extends Scene
         this.coins.push(coin);
     }
 
-    clickCoin (coin)
-    {
+    clickCoin(coin) {
         //  Disable the coin from being clicked
         coin.disableInteractive();
 
@@ -71,17 +65,14 @@ export class ClickerGame extends Scene
         this.dropCoin();
     }
 
-    update ()
-    {
+    update() {
         this.timeText.setText('Time: ' + Math.ceil(this.timer.getRemainingSeconds()));
     }
 
-    gameOver ()
-    {
+    gameOver() {
         this.coins.forEach((coin) => {
 
-            if (coin.active)
-            {
+            if (coin.active) {
                 coin.setVelocity(0, 0);
 
                 coin.play('vanish');
@@ -94,8 +85,7 @@ export class ClickerGame extends Scene
         //  Save our highscore to the registry
         const highscore = this.registry.get('highscore');
 
-        if (this.score > highscore)
-        {
+        if (this.score > highscore) {
             this.registry.set('highscore', this.score);
         }
 
