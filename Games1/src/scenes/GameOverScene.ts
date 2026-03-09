@@ -1,42 +1,29 @@
 import {Scene} from "phaser";
 
 export class GameOverScene extends Scene {
-    end_points = 0;
+    end_points: number = 0;
 
     constructor() {
         super("GameOverScene");
     }
 
+    // do not remove this function
     init(data) {
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.end_points = data.points || 0;
     }
 
     create() {
+
         // Backgrounds
-        this.add.image(0, 0, "background")
-            .setOrigin(0, 0);
-        this.add.image(0, this.scale.height, "floor")
-            .setOrigin(0, 1);
+        this.add.image(0, 0, "background").setOrigin(0, 0);
+        this.add.image(0, this.scale.height, "floor").setOrigin(0, 1);
 
         // Rectangles to show the text
-        // Background rectangles
-        this.add.rectangle(
-            0,
-            this.scale.height / 2,
-            this.scale.width,
-            120,
-            0xffffff
-        ).setAlpha(.8).setOrigin(0, 0.5);
-        this.add.rectangle(
-            0,
-            this.scale.height / 2 + 105,
-            this.scale.width,
-            90,
-            0x000000
-        ).setAlpha(.8).setOrigin(0, 0.5);
+        this.add.rectangle(0, this.scale.height / 2, this.scale.width, 120, 0xffffff).setAlpha(.8).setOrigin(0, 0.5);
+        this.add.rectangle(0, this.scale.height / 2 + 105, this.scale.width, 90, 0x000000).setAlpha(.8).setOrigin(0, 0.5);
 
-        const gameover_text = this.add.bitmapText(
+        const game_over_text: Phaser.GameObjects.BitmapText = this.add.bitmapText(
             this.scale.width / 2,
             this.scale.height / 2,
             "knighthawks",
@@ -44,8 +31,8 @@ export class GameOverScene extends Scene {
             62,
             1
         )
-        gameover_text.setOrigin(0.5, 0.5);
-        gameover_text.postFX.addShine();
+        game_over_text.setOrigin(0.5, 0.5);
+        game_over_text.postFX.addShine();
 
         this.add.bitmapText(
             this.scale.width / 2,
