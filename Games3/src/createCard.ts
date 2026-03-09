@@ -8,7 +8,7 @@ interface CreateCardParams {
     cardName: string;
 }
 
-interface CardObject {
+export interface CardObject {
     gameObject: Phaser.GameObjects.GameObject;
     flip: (callbackComplete?: () => void) => void;
     destroy: () => void;
