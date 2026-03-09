@@ -8,9 +8,8 @@ export class MainScene extends Scene {
     player!: Player;
     enemy_blue!: BlueEnemy;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-
-    points = 0;
-    game_over_timeout = 20;
+    points: number = 0;
+    game_over_timeout: number = 20;
 
     constructor() {
         super("MainScene");

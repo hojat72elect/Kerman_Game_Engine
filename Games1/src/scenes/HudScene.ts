@@ -1,20 +1,17 @@
 import {Scene} from "phaser";
 
-// The HUD scene is the scene that shows the points and the remaining time.
+/**
+ * The HUD scene is the scene that shows the points and the remaining time.
+ * This scene is shown alongside the main scene of the game.
+ */
 export class HudScene extends Scene {
 
-    remaining_time = 0;
-
-    remaining_time_text;
-    points_text;
+    remaining_time: number = 0;
+    remaining_time_text!: Phaser.GameObjects.BitmapText;
+    points_text!: Phaser.GameObjects.BitmapText;
 
     constructor() {
         super("HudScene");
-    }
-
-    init(data) {
-        this.cameras.main.fadeIn(1000, 0, 0, 0);
-        this.remaining_time = data.remaining_time;
     }
 
     create() {
@@ -23,11 +20,11 @@ export class HudScene extends Scene {
             .setOrigin(1, 0);
     }
 
-    update_points(points) {
+    update_points(points: number) {
         this.points_text.setText(`POINTS:${points.toString().padStart(4, "0")}`);
     }
 
-    update_timeout(timeout) {
+    update_timeout(timeout: number) {
         this.remaining_time_text.setText(`REMAINING:${timeout.toString().padStart(2, "0")}s`);
     }
 }
