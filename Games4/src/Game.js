@@ -2,10 +2,8 @@ import Germs from './Germs.js';
 import Player from './Player.js';
 import Pickups from './Pickups.js';
 
-export default class MainGame extends Phaser.Scene
-{
-    constructor ()
-    {
+export default class MainGame extends Phaser.Scene {
+    constructor() {
         super('MainGame');
 
         this.player;
@@ -19,8 +17,7 @@ export default class MainGame extends Phaser.Scene
         this.newHighscore = false;
     }
 
-    create ()
-    {
+    create() {
         this.score = 0;
         this.highscore = this.registry.get('highscore');
         this.newHighscore = false;
@@ -58,45 +55,35 @@ export default class MainGame extends Phaser.Scene
         this.physics.add.overlap(this.player, this.germs, (player, germ) => this.playerHitGerm(player, germ));
     }
 
-    playerHitGerm (player, germ)
-    {
+    playerHitGerm(player, germ) {
         //  We don't count a hit if the germ is fading in or out
-        if (player.isAlive && germ.alpha === 1)
-        {
+        if (player.isAlive && germ.alpha === 1) {
             this.gameOver();
         }
     }
 
-    playerHitPickup (player, pickup)
-    {
+    playerHitPickup(player, pickup) {
         this.score++;
 
         this.scoreText.setText('Score   ' + this.score);
 
-        if (!this.newHighscore && this.score > this.highscore)
-        {
-            if (this.highscore > 0)
-            {
+        if (!this.newHighscore && this.score > this.highscore) {
+            if (this.highscore > 0) {
                 //  Only play the victory sound if they actually set a new highscore
                 this.sound.play('victory');
-            }
-            else
-            {
+            } else {
                 this.sound.play('pickup');
             }
 
             this.newHighscore = true;
-        }
-        else
-        {
+        } else {
             this.sound.play('pickup');
         }
 
         this.pickups.collect(pickup);
     }
 
-    gameOver ()
-    {
+    gameOver() {
         this.player.kill();
         this.germs.stop();
 
@@ -111,8 +98,7 @@ export default class MainGame extends Phaser.Scene
             duration: 300
         });
 
-        if (this.newHighscore)
-        {
+        if (this.newHighscore) {
             this.registry.set('highscore', this.score);
         }
 
@@ -121,8 +107,7 @@ export default class MainGame extends Phaser.Scene
         });
     }
 
-    getPlayer (target)
-    {
+    getPlayer(target) {
         target.x = this.player.x;
         target.y = this.player.y;
 

@@ -1,14 +1,11 @@
-export default class MainMenu extends Phaser.Scene
-{
-    constructor ()
-    {
+export default class MainMenu extends Phaser.Scene {
+    constructor() {
         super('MainMenu');
     }
 
-    create ()
-    {
-        this.music = this.sound.play('music', { loop: true });
-        
+    create() {
+        this.music = this.sound.play('music', {loop: true});
+
         this.sound.play('laugh');
 
         this.add.image(400, 300, 'background').setScale(2);
@@ -33,12 +30,11 @@ export default class MainMenu extends Phaser.Scene
         });
     }
 
-    addGerm (area, animation)
-    {
+    addGerm(area, animation) {
         let start = area.getRandomPoint();
 
         let germ = this.add.sprite(start.x, start.y).play(animation).setScale(2);
-        
+
         let durationX = Phaser.Math.Between(4000, 6000);
         let durationY = durationX + 3000;
 

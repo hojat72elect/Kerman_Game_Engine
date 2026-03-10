@@ -1,7 +1,5 @@
-export default class Germ extends Phaser.Physics.Arcade.Sprite
-{
-    constructor (scene, x, y, animation, speed)
-    {
+export default class Germ extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, animation, speed) {
         super(scene, x, y, 'assets');
 
         this.play(animation)
@@ -17,12 +15,10 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite
         this.target = new Phaser.Math.Vector2();
     }
 
-    start (chaseDelay)
-    {
+    start(chaseDelay) {
         this.setCircle(14, 6, 2);
 
-        if (!chaseDelay)
-        {
+        if (!chaseDelay) {
             chaseDelay = Phaser.Math.RND.between(3000, 8000);
 
             this.scene.sound.play('appear');
@@ -35,8 +31,7 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite
             ease: 'Linear',
             hold: chaseDelay,
             onComplete: () => {
-                if (this.scene.player.isAlive)
-                {
+                if (this.scene.player.isAlive) {
                     this.lifespan = Phaser.Math.RND.between(6000, 12000);
                     this.isChasing = true;
                 }
@@ -46,8 +41,7 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite
         return this;
     }
 
-    restart (x, y)
-    {
+    restart(x, y) {
         this.body.reset(x, y);
 
         this.setActive(true);
@@ -57,16 +51,13 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite
         return this.start();
     }
 
-    preUpdate (time, delta)
-    {
+    preUpdate(time, delta) {
         super.preUpdate(time, delta);
 
-        if (this.isChasing)
-        {
+        if (this.isChasing) {
             this.lifespan -= delta;
 
-            if (this.lifespan <= 0)
-            {
+            if (this.lifespan <= 0) {
                 this.isChasing = false;
 
                 this.body.stop();
@@ -81,19 +72,16 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite
                         this.setVisible(false);
                     }
                 });
-            }
-            else
-            {
+            } else {
                 this.scene.getPlayer(this.target);
-            
+
                 //  Add 90 degrees because the sprite is drawn facing up
                 this.rotation = this.scene.physics.moveToObject(this, this.target, this.speed) + 1.5707963267948966;
             }
         }
     }
 
-    stop ()
-    {
+    stop() {
         this.isChasing = false;
 
         this.body.stop();
