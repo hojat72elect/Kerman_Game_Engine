@@ -1,4 +1,7 @@
 export default class MainMenu extends Phaser.Scene {
+
+    music: boolean = false;
+
     constructor() {
         super('MainMenu');
     }
@@ -30,9 +33,10 @@ export default class MainMenu extends Phaser.Scene {
         });
     }
 
-    addGerm(area, animation) {
+    addGerm(area: any, animation: any) {
         let start = area.getRandomPoint();
 
+        //@ts-ignore
         let germ = this.add.sprite(start.x, start.y).play(animation).setScale(2);
 
         let durationX = Phaser.Math.Between(4000, 6000);
@@ -41,7 +45,7 @@ export default class MainMenu extends Phaser.Scene {
         this.tweens.add({
             targets: germ,
             x: {
-                getStart: (tween, target) => {
+                getStart: (_: any, __: any) => {
                     return germ.x;
                 },
                 getEnd: () => {
@@ -51,7 +55,7 @@ export default class MainMenu extends Phaser.Scene {
                 ease: 'Linear'
             },
             y: {
-                getStart: (tween, target) => {
+                getStart: (_: any, __: any) => {
                     return germ.y;
                 },
                 getEnd: () => {
