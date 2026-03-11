@@ -1,5 +1,14 @@
 export default class Germ extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, animation, speed) {
+
+    speed: any;
+    alpha = 0;
+    c = 0;
+    isChasing = false;
+    target!: Phaser.Math.Vector2;
+    lifespan = 0;
+
+
+    constructor(scene: any, x: any, y: any, animation: any, speed: any) {
         super(scene, x, y, 'assets');
 
         this.play(animation)
@@ -9,13 +18,13 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
         this.speed = speed;
 
         this.alpha = 0;
-        this.lifespan = 0;
+        this.c = 0;
         this.isChasing = false;
 
         this.target = new Phaser.Math.Vector2();
     }
 
-    start(chaseDelay) {
+    start(chaseDelay: any) {
         this.setCircle(14, 6, 2);
 
         if (!chaseDelay) {
@@ -31,7 +40,7 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
             ease: 'Linear',
             hold: chaseDelay,
             onComplete: () => {
-                if (this.scene.player.isAlive) {
+                if ((this.scene as any).player.isAlive) {
                     this.lifespan = Phaser.Math.RND.between(6000, 12000);
                     this.isChasing = true;
                 }
@@ -41,17 +50,17 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
         return this;
     }
 
-    restart(x, y) {
-        this.body.reset(x, y);
+    restart(x: any, y: any) {
+        this.body!.reset(x, y);
 
         this.setActive(true);
         this.setVisible(true);
         this.setAlpha(0);
-
+        //@ts-ignore
         return this.start();
     }
 
-    preUpdate(time, delta) {
+    preUpdate(time: any, delta: any) {
         super.preUpdate(time, delta);
 
         if (this.isChasing) {
@@ -60,7 +69,7 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
             if (this.lifespan <= 0) {
                 this.isChasing = false;
 
-                this.body.stop();
+                this.body!.stop();
 
                 this.scene.tweens.add({
                     targets: this,
@@ -73,7 +82,7 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
                     }
                 });
             } else {
-                this.scene.getPlayer(this.target);
+                (this.scene as any).getPlayer(this.target);
 
                 //  Add 90 degrees because the sprite is drawn facing up
                 this.rotation = this.scene.physics.moveToObject(this, this.target, this.speed) + 1.5707963267948966;
@@ -81,9 +90,10 @@ export default class Germ extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    //@ts-ignore
     stop() {
         this.isChasing = false;
 
-        this.body.stop();
+        this.body!.stop();
     }
 }
