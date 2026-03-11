@@ -1,4 +1,7 @@
 export default class Preloader extends Phaser.Scene {
+
+    loadText!: Phaser.GameObjects.BitmapText;
+
     constructor() {
         super('Preloader');
     }
