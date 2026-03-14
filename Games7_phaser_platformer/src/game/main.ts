@@ -1,26 +1,25 @@
-import { AUTO, Game, Scale,Types } from 'phaser';
-import Boot from "./scenes/Boot";
-import Preloader from "./scenes/Preloader";
-import MainMenu from "./scenes/MainMenu";
-import MainGame from "./scenes/Game";
+import {AUTO, Game, Types} from 'phaser';
+import {Example} from "./part10";
 
 const config: Types.Core.GameConfig = {
     type: AUTO,
     width: 800,
     height: 600,
-    parent: 'game-container',
-    backgroundColor: '#008eb0',
-    scale: {
-        mode: Scale.FIT,
-        autoCenter: Scale.CENTER_BOTH
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: {x: 0, y: 300},
+            debug: false
+        }
     },
+    parent: 'game-container',
     scene: [
-        Boot, Preloader, MainMenu, MainGame
+        Example
     ]
 };
 
 const StartGame = (parent: string) => {
-    return new Game({ ...config, parent });
+    return new Game({...config, parent});
 }
 
 export default StartGame;
