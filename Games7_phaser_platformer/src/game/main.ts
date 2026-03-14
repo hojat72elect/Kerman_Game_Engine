@@ -1,4 +1,4 @@
-import {AUTO, Game, Types} from 'phaser';
+import {AUTO, Game, Scale, Types} from 'phaser';
 import {Example} from "./part10";
 
 const config: Types.Core.GameConfig = {
@@ -13,6 +13,10 @@ const config: Types.Core.GameConfig = {
         }
     },
     parent: 'game-container',
+    scale: {
+        mode: Scale.FIT,
+        autoCenter: Scale.CENTER_BOTH
+    },
     scene: [
         Example
     ]
