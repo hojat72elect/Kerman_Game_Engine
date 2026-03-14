@@ -1,10 +1,11 @@
 export class Breakout extends Phaser.Scene {
+
+    bricks!: Phaser.Physics.Arcade.StaticGroup;
+    ball!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+    paddle!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+
     constructor() {
         super({key: 'breakout'});
-
-        this.bricks;
-        this.paddle;
-        this.ball;
     }
 
     preload() {
@@ -29,32 +30,37 @@ export class Breakout extends Phaser.Scene {
         this.paddle = this.physics.add.image(400, 550, 'breakout', 'paddle1').setImmovable();
 
         //  Our colliders
-        this.physics.add.collider(this.ball, this.bricks, this.hitBrick, null, this);
-        this.physics.add.collider(this.ball, this.paddle, this.hitPaddle, null, this);
+        this.physics.add.collider(this.ball, this.bricks, this.hitBrick, undefined, this);
+        this.physics.add.collider(this.ball, this.paddle, this.hitPaddle, undefined, this);
 
         //  Input events
-        this.input.on('pointermove', function (pointer) {
+        this.input.on('pointermove', function (pointer: any) {
 
             //  Keep the paddle within the game
+            //@ts-ignore
             this.paddle.x = Phaser.Math.Clamp(pointer.x, 52, 748);
-
+            //@ts-ignore
             if (this.ball.getData('onPaddle')) {
+                //@ts-ignore
                 this.ball.x = this.paddle.x;
             }
 
+
         }, this);
 
-        this.input.on('pointerup', function (pointer) {
-
+        this.input.on('pointerup', function (_: any) {
+            //@ts-ignore
             if (this.ball.getData('onPaddle')) {
+                //@ts-ignore
                 this.ball.setVelocity(-75, -300);
+                //@ts-ignore
                 this.ball.setData('onPaddle', false);
             }
 
         }, this);
     }
 
-    hitBrick(ball, brick) {
+    hitBrick(_: any, brick: any) {
         brick.disableBody(true, true);
 
         if (this.bricks.countActive() === 0) {
@@ -78,7 +84,7 @@ export class Breakout extends Phaser.Scene {
         });
     }
 
-    hitPaddle(ball, paddle) {
+    hitPaddle(ball: any, paddle: any) {
         let diff = 0;
 
         if (ball.x < paddle.x) {
