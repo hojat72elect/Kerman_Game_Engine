@@ -1,12 +1,10 @@
-import { Game as MainGame } from './scenes/Game';
-import { AUTO, Game, Scale,Types } from 'phaser';
+import { WEBGL, Game, Scale,Types } from 'phaser';
+import {Breakout} from "./scenes/breakout.js";
 
-// Find out more information about the Game Config at:
-// https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config: Types.Core.GameConfig = {
-    type: AUTO,
-    width: 1024,
-    height: 768,
+    type: WEBGL,
+    width: 800,
+    height: 600,
     parent: 'game-container',
     backgroundColor: '#028af8',
     scale: {
@@ -14,8 +12,11 @@ const config: Types.Core.GameConfig = {
         autoCenter: Scale.CENTER_BOTH
     },
     scene: [
-        MainGame
-    ]
+        Breakout
+    ],
+    physics:{
+        default: 'arcade'
+    }
 };
 
 const StartGame = (parent: string) => {
