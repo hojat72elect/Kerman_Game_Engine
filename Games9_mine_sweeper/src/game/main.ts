@@ -1,10 +1,12 @@
-import {WEBGL, Game, Scale, Types} from 'phaser';
-import {Flood} from "./flood-fill";
+import {AUTO, Game, Scale, Types} from 'phaser';
+import {Intro, MineSweeper} from "./minesweeper";
+
 
 const config: Types.Core.GameConfig = {
-    type: WEBGL,
+    type: AUTO,
     width: 800,
     height: 600,
+    backgroundColor: 0x2d2d2d,
     pixelArt: true,
     physics: {
         default: 'arcade',
@@ -19,7 +21,7 @@ const config: Types.Core.GameConfig = {
         autoCenter: Scale.CENTER_BOTH
     },
     scene: [
-        Flood
+        Intro, MineSweeper
     ]
 };
 

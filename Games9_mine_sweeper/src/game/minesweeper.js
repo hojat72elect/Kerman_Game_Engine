@@ -487,7 +487,7 @@ class Grid {
     }
 }
 
-class Intro extends Phaser.Scene {
+export class Intro extends Phaser.Scene {
     constructor() {
         super();
     }
@@ -556,7 +556,7 @@ class Intro extends Phaser.Scene {
     }
 }
 
-class MineSweeper extends Phaser.Scene {
+export class MineSweeper extends Phaser.Scene {
     constructor() {
         super('MineSweeper');
     }
@@ -574,13 +574,3 @@ class MineSweeper extends Phaser.Scene {
     }
 }
 
-const config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    backgroundColor: 0x2d2d2d,
-    parent: 'phaser-example',
-    scene: [Intro, MineSweeper]
-};
-
-const game = new Phaser.Game(config);
