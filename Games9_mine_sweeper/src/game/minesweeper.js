@@ -493,8 +493,8 @@ export class Intro extends Phaser.Scene {
     }
 
     preload() {
-        this.load.setBaseURL('https://cdn.phaserfiles.com/v385');
-        this.load.setPath('assets/games/minesweeper/');
+        this.load.setBaseURL('');
+        this.load.setPath('assets/');
 
         this.load.spritesheet('tiles', 'tiles.png', {frameWidth: 16});
         this.load.spritesheet('digits', 'digits.png', {frameWidth: 13, frameHeight: 23, endFrame: 9});
