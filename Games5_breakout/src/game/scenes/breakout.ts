@@ -77,9 +77,10 @@ export class Breakout extends Phaser.Scene {
     resetLevel() {
         this.resetBall();
 
-        this.bricks.children.each(brick => {
+        this.bricks.children.each((brick: any) => {
 
-            brick.enableBody(false, 0, 0, true, true);
+            (brick as any).enableBody(false, 0, 0, true, true);
+            return null;
 
         });
     }
