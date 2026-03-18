@@ -1,68 +1,74 @@
-import {type CardObject, createCard} from './createCard';
+import { createCard } from './createCard';
 import Phaser from 'phaser';
 
 /**
- * Card Memory Game
+ * Card Memory Game by Francisco Pereira (Gammafp)
  * -----------------------------------------------
  *
  * Test your memory skills in this classic game of matching pairs.
  * Flip over cards to reveal pictures, and try to remember where each image is located.
  * Match all the pairs to win!
+ *
+ * Music credits:
+ * "Fat Caps" by Audionautix is licensed under the Creative Commons Attribution 4.0 license. https://creativecommons.org/licenses/by/4.0/
+ * Artist http://audionautix.com/
  */
-export class Play extends Phaser.Scene {
-
+export class Play extends Phaser.Scene
+{
     // All cards names
-    cardNames: string[] = ["card-0", "card-1", "card-2", "card-3", "card-4", "card-5"];
+    cardNames = ["card-0", "card-1", "card-2", "card-3", "card-4", "card-5"];
     // Cards Game Objects
-    cards: CardObject[] = [];
+    cards = [];
 
     // History of card opened
-    cardOpened: CardObject | undefined = undefined;
+    cardOpened = undefined;
 
     // Can play the game
-    canMove: boolean = false;
+    canMove = false;
 
     // Game variables
-    lives: number = 0;
+    lives = 0;
 
     // Grid configuration
-    gridConfiguration: {x: number; y: number; paddingX: number; paddingY: number} = {
+    gridConfiguration = {
         x: 113,
         y: 102,
         paddingX: 10,
         paddingY: 10
     }
 
-    constructor() {
-        super({key: 'Play'});
+    constructor ()
+    {
+        super({
+            key: 'Play'
+        });
     }
 
-    init() {
+    init ()
+    {
         // Fadein camera
         this.cameras.main.fadeIn(500);
         this.lives = 10;
         this.volumeButton();
     }
 
-    create() {
+    create ()
+    {
         // Background image
         this.add.image(this.gridConfiguration.x - 63, this.gridConfiguration.y - 77, "background").setOrigin(0);
 
-        const titleText: Phaser.GameObjects.Text = this.add.text(
-            this.sys.game.scale.width / 2,
-            this.sys.game.scale.height / 2,
+        const titleText = this.add.text(this.sys.game.scale.width / 2, this.sys.game.scale.height / 2,
             "Memory Card Game\nClick to Play",
-            {align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#8c7ae6"}
+            { align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#8c7ae6" }
         )
-            .setOrigin(0.5)
+            .setOrigin(.5)
             .setDepth(3)
             .setInteractive();
-
         // title tween like retro arcade
         this.add.tween({
             targets: titleText,
             duration: 800,
-            ease: (value: number) => (value > 0.8),
+            ease: (value) => (value > .8),
             alpha: 0,
             repeat: -1,
             yoyo: true,
@@ -78,14 +84,14 @@ export class Play extends Phaser.Scene {
             this.input.setDefaultCursor("default");
         });
         titleText.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.sound.play("whoosh", {volume: 1.3});
+            this.sound.play("whoosh", { volume: 1.3 });
             this.add.tween({
                 targets: titleText,
                 ease: Phaser.Math.Easing.Bounce.InOut,
                 y: -1000,
                 onComplete: () => {
                     if (!this.sound.get("theme-song")) {
-                        this.sound.play("theme-song", {loop: true, volume: 0.5});
+                        this.sound.play("theme-song", { loop: true, volume: .5 });
                     }
                     this.startGame();
                 }
@@ -93,10 +99,11 @@ export class Play extends Phaser.Scene {
         });
     }
 
-    restartGame(): void {
+    restartGame ()
+    {
         this.cardOpened = undefined;
         this.cameras.main.fadeOut(200 * this.cards.length);
-        this.cards.reverse().forEach((card, index) => {
+        this.cards.reverse().map((card, index) => {
             this.add.tween({
                 targets: card.gameObject,
                 duration: 500,
@@ -105,7 +112,7 @@ export class Play extends Phaser.Scene {
                 onComplete: () => {
                     card.gameObject.destroy();
                 }
-            });
+            })
         });
 
         this.time.addEvent({
@@ -114,17 +121,18 @@ export class Play extends Phaser.Scene {
                 this.cards = [];
                 this.canMove = false;
                 this.scene.restart();
-                this.sound.play("card-slide", {volume: 1.2});
+                this.sound.play("card-slide", { volume: 1.2 });
             }
-        });
+        })
     }
 
-    createGridCards(): CardObject[] {
+    createGridCards ()
+    {
         // Phaser random array position
-        const gridCardNames: string[] = Phaser.Utils.Array.Shuffle([...this.cardNames, ...this.cardNames]);
+        const gridCardNames = Phaser.Utils.Array.Shuffle([...this.cardNames, ...this.cardNames]);
 
         return gridCardNames.map((name, index) => {
-            const newCard: CardObject = createCard({
+            const newCard = createCard({
                 scene: this,
                 x: this.gridConfiguration.x + (98 + this.gridConfiguration.paddingX) * (index % 4),
                 y: -1000,
@@ -135,16 +143,18 @@ export class Play extends Phaser.Scene {
                 targets: newCard.gameObject,
                 duration: 800,
                 delay: index * 100,
-                onStart: () => this.sound.play("card-slide", {volume: 1.2}),
+                onStart: () => this.sound.play("card-slide", { volume: 1.2 }),
                 y: this.gridConfiguration.y + (128 + this.gridConfiguration.paddingY) * Math.floor(index / 4)
             })
             return newCard;
         });
     }
 
-    createHearts(): Phaser.GameObjects.Image[] {
+    createHearts ()
+    {
         return Array.from(new Array(this.lives)).map((el, index) => {
-            const heart: Phaser.GameObjects.Image = this.add.image(this.sys.game.scale.width + 1000, 20, "heart").setScale(2);
+            const heart = this.add.image(this.sys.game.scale.width + 1000, 20, "heart")
+                .setScale(2)
 
             this.add.tween({
                 targets: heart,
@@ -158,8 +168,9 @@ export class Play extends Phaser.Scene {
     }
 
 
-    volumeButton(): void {
-        const volumeIcon: Phaser.GameObjects.Image = this.add.image(25, 25, "volume-icon").setName("volume-icon");
+    volumeButton ()
+    {
+        const volumeIcon = this.add.image(25, 25, "volume-icon").setName("volume-icon");
         volumeIcon.setInteractive();
 
         // Mouse enter
@@ -172,6 +183,7 @@ export class Play extends Phaser.Scene {
             this.input.setDefaultCursor("default");
         });
 
+
         volumeIcon.on(Phaser.Input.Events.POINTER_DOWN, () => {
             if (this.sound.volume === 0) {
                 this.sound.setVolume(1);
@@ -180,36 +192,32 @@ export class Play extends Phaser.Scene {
             } else {
                 this.sound.setVolume(0);
                 volumeIcon.setTexture("volume-icon_off");
-                volumeIcon.setAlpha(0.5);
+                volumeIcon.setAlpha(.5)
             }
         });
     }
 
-    startGame(): void {
+    startGame ()
+    {
 
         // WinnerText and GameOverText
-        const winnerText: Phaser.GameObjects.Text = this.add.text(
-            this.sys.game.scale.width / 2,
-            -1_000,
-            "YOU WIN",
-            {align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#8c7ae6"}
-        ).setOrigin(0.5)
+        const winnerText = this.add.text(this.sys.game.scale.width / 2, -1000, "YOU WIN",
+            { align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#8c7ae6" }
+        ).setOrigin(.5)
             .setDepth(3)
             .setInteractive();
 
-        const gameOverText: Phaser.GameObjects.Text = this.add.text(
-            this.sys.game.scale.width / 2,
-            -1_000,
+        const gameOverText = this.add.text(this.sys.game.scale.width / 2, -1000,
             "GAME OVER\nClick to restart",
-            {align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#ff0000"}
+            { align: "center", strokeThickness: 4, fontSize: 40, fontStyle: "bold", color: "#ff0000" }
         )
             .setName("gameOverText")
             .setDepth(3)
-            .setOrigin(0.5)
+            .setOrigin(.5)
             .setInteractive();
 
-        // Start lives images
-        const hearts:Phaser.GameObjects.Image[] = this.createHearts();
+        // Start lifes images
+        const hearts = this.createHearts();
 
         // Create a grid of cards
         this.cards = this.createGridCards();
@@ -223,15 +231,14 @@ export class Play extends Phaser.Scene {
         });
 
         // Game Logic
-        this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer: Phaser.Input.Pointer) => {
+        this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer) => {
             if (this.canMove) {
-                const card = this.cards.find(card => (card.gameObject as any).hasFaceAt(pointer.x, pointer.y));
+                const card = this.cards.find(card => card.gameObject.hasFaceAt(pointer.x, pointer.y));
                 if (card) {
                     this.input.setDefaultCursor("pointer");
                 } else {
-                    const go = this.input.manager.hitTest(pointer) as Phaser.GameObjects.GameObject[];
-                    if (go[0]) {
-                        if (go[0].name !== "volume-icon") {
+                    if(go[0]) {
+                        if(go[0].name !== "volume-icon") {
                             this.input.setDefaultCursor("pointer");
                         }
                     } else {
@@ -240,9 +247,9 @@ export class Play extends Phaser.Scene {
                 }
             }
         });
-        this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+        this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
             if (this.canMove && this.cards.length) {
-                const card = this.cards.find(card => (card.gameObject as any).hasFaceAt(pointer.x, pointer.y));
+                const card = this.cards.find(card => card.gameObject.hasFaceAt(pointer.x, pointer.y));
 
                 if (card) {
                     this.canMove = false;
@@ -256,7 +263,7 @@ export class Play extends Phaser.Scene {
                         }
 
                         card.flip(() => {
-                            if (this.cardOpened!.cardName === card.cardName) {
+                            if (this.cardOpened.cardName === card.cardName) {
                                 // ------- Match -------
                                 this.sound.play("card-match");
                                 // Destroy card selected and card opened from history
@@ -279,7 +286,7 @@ export class Play extends Phaser.Scene {
                                     targets: lastHeart,
                                     ease: Phaser.Math.Easing.Expo.InOut,
                                     duration: 1000,
-                                    y: -1000,
+                                    y: - 1000,
                                     onComplete: () => {
                                         lastHeart.destroy();
                                         hearts.pop();
@@ -298,7 +305,7 @@ export class Play extends Phaser.Scene {
                             // Check if the game is over
                             if (this.lives === 0) {
                                 // Show Game Over text
-                                this.sound.play("whoosh", {volume: 1.3});
+                                this.sound.play("whoosh", { volume: 1.3 });
                                 this.add.tween({
                                     targets: gameOverText,
                                     ease: Phaser.Math.Easing.Bounce.Out,
@@ -310,7 +317,7 @@ export class Play extends Phaser.Scene {
 
                             // Check if the game is won
                             if (this.cards.length === 0) {
-                                this.sound.play("whoosh", {volume: 1.3});
+                                this.sound.play("whoosh", { volume: 1.3 });
                                 this.sound.play("victory");
 
                                 this.add.tween({
@@ -345,7 +352,7 @@ export class Play extends Phaser.Scene {
             this.input.setDefaultCursor("default");
         });
         winnerText.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.sound.play("whoosh", {volume: 1.3});
+            this.sound.play("whoosh", { volume: 1.3 });
             this.add.tween({
                 targets: winnerText,
                 ease: Phaser.Math.Easing.Bounce.InOut,
