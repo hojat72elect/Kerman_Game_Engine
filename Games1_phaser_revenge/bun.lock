@@ -5,9 +5,10 @@
     "": {
       "name": "template-vite",
       "dependencies": {
-        "phaser": "^3.80.1",
+        "phaser": "3.90.0",
       },
       "devDependencies": {
+        "typescript": "^5.9.3",
         "vite": "^5.1.6",
       },
     },
@@ -95,7 +96,7 @@
 
     "nanoid": ["nanoid@3.3.7", "", { "bin": "bin/nanoid.cjs" }, "sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g=="],
 
-    "phaser": ["phaser@3.80.1", "", { "dependencies": { "eventemitter3": "^5.0.1" } }, "sha512-VQGAWoDOkEpAWYkI+PUADv5Ql+SM0xpLuAMBJHz9tBcOLqjJ2wd8bUhxJgOqclQlLTg97NmMd9MhS75w16x1Cw=="],
+    "phaser": ["phaser@3.90.0", "", { "dependencies": { "eventemitter3": "^5.0.1" } }, "sha512-/cziz/5ZIn02uDkC9RzN8VF9x3Gs3XdFFf9nkiMEQT3p7hQlWuyjy4QWosU802qqno2YSLn2BfqwOKLv/sSVfQ=="],
 
     "picocolors": ["picocolors@1.0.0", "", {}, "sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ=="],
 
@@ -104,6 +105,8 @@
     "rollup": ["rollup@4.9.4", "", { "dependencies": { "@types/estree": "1.0.5" }, "optionalDependencies": { "@rollup/rollup-android-arm-eabi": "4.9.4", "@rollup/rollup-android-arm64": "4.9.4", "@rollup/rollup-darwin-arm64": "4.9.4", "@rollup/rollup-darwin-x64": "4.9.4", "@rollup/rollup-linux-arm-gnueabihf": "4.9.4", "@rollup/rollup-linux-arm64-gnu": "4.9.4", "@rollup/rollup-linux-arm64-musl": "4.9.4", "@rollup/rollup-linux-riscv64-gnu": "4.9.4", "@rollup/rollup-linux-x64-gnu": "4.9.4", "@rollup/rollup-linux-x64-musl": "4.9.4", "@rollup/rollup-win32-arm64-msvc": "4.9.4", "@rollup/rollup-win32-ia32-msvc": "4.9.4", "@rollup/rollup-win32-x64-msvc": "4.9.4", "fsevents": "~2.3.2" }, "bin": "dist/bin/rollup" }, "sha512-2ztU7pY/lrQyXSCnnoU4ICjT/tCG9cdH3/G25ERqE3Lst6vl2BCM5hL2Nw+sslAvAf+ccKsAq1SkKQALyqhR7g=="],
 
     "source-map-js": ["source-map-js@1.0.2", "", {}, "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="],
+
+    "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "vite": ["vite@5.1.6", "", { "dependencies": { "esbuild": "^0.19.3", "postcss": "^8.4.35", "rollup": "^4.2.0" }, "optionalDependencies": { "fsevents": "~2.3.3" }, "peerDependencies": { "@types/node": "^18.0.0 || >=20.0.0", "less": "*", "lightningcss": "^1.21.0", "sass": "*", "stylus": "*", "sugarss": "*", "terser": "^5.4.0" }, "optionalPeers": ["@types/node", "less", "lightningcss", "sass", "stylus", "sugarss", "terser"], "bin": "bin/vite.js" }, "sha512-yYIAZs9nVfRJ/AiOLCA91zzhjsHUgMjB+EigzFb6W2XTLO8JixBCKCjvhKZaye+NKYHCrkv3Oh50dH9EdLU2RA=="],
   }
