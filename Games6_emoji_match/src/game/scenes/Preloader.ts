@@ -1,8 +1,9 @@
-export default class Preloader extends Phaser.Scene {
+export class Preloader extends Phaser.Scene {
+
+    loadText!: Phaser.GameObjects.Text;
+
     constructor() {
         super('Preloader');
-
-        this.loadText;
     }
 
     preload() {
@@ -13,7 +14,7 @@ export default class Preloader extends Phaser.Scene {
         this.loadText.setShadow(2, 2, '#2d2d2d', 4, true, false);
 
         this.load.setPath('assets/');
-        this.load.image(['background', 'logo']);
+        this.load.image(['background', 'logo'] as any as Phaser.Types.Loader.FileTypes.ImageFileConfig[]);
         this.load.multiatlas('emojis', 'emojis.json');
 
         //  Audio ...
