@@ -1,25 +1,28 @@
-export default class MainMenu extends Phaser.Scene {
+import {Scene} from 'phaser';
+
+export class MainMenu extends Scene {
+
+    music = false;
+
     constructor() {
         super('MainMenu');
-
-        this.music;
     }
 
     create() {
-        let background = this.add.image(400, 300, 'background');
+        let background: Phaser.GameObjects.Image = this.add.image(400, 300, 'background');
 
         this.tweens.add({
             targets: background,
             alpha: {from: 0, to: 1},
-            duration: 1000
+            duration: 1_000
         });
 
-        const fontStyle = {
+        const fontStyle: Phaser.Types.GameObjects.Text.TextStyle = {
             fontFamily: 'Arial',
             fontSize: 48,
             color: '#ffffff',
             fontStyle: 'bold',
-            padding: 16,
+            padding: {x: 16, y: 16},
             shadow: {
                 color: '#000000',
                 fill: true,
