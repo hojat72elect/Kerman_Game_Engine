@@ -1,24 +1,20 @@
 export class MainGame extends Phaser.Scene {
+
+    emojis!: Phaser.GameObjects.Group;
+    circle1!: Phaser.GameObjects.Arc;
+    circle2!: Phaser.GameObjects.Arc;
+    child1!: Phaser.GameObjects.GameObject;
+    child2!: Phaser.GameObjects.GameObject;
+    matched = false;
+    score = 0;
+    highscore = 0;
+    selectedEmoji: any = null;
+    timerText!: Phaser.GameObjects.Text;
+    scoreText!: Phaser.GameObjects.Text;
+    timer!: Phaser.Time.TimerEvent;
+
     constructor() {
         super('MainGame');
-
-        this.emojis;
-
-        this.circle1;
-        this.circle2;
-
-        this.child1;
-        this.child2;
-
-        this.selectedEmoji = null;
-        this.matched = false;
-
-        this.score = 0;
-        this.highscore = 0;
-        this.scoreText;
-
-        this.timer;
-        this.timerText;
     }
 
     create() {
@@ -46,12 +42,12 @@ export class MainGame extends Phaser.Scene {
             }
         });
 
-        const fontStyle = {
+        const fontStyle: Phaser.Types.GameObjects.Text.TextStyle = {
             fontFamily: 'Arial',
             fontSize: 48,
             color: '#ffffff',
             fontStyle: 'bold',
-            padding: 16,
+            padding: {x: 16, y: 16},
             shadow: {
                 color: '#000000',
                 fill: true,
@@ -89,7 +85,7 @@ export class MainGame extends Phaser.Scene {
         this.sound.play('countdown', {delay: 27});
     }
 
-    selectEmoji(pointer, emoji) {
+    selectEmoji(_: any, emoji: any) {
         if (this.matched) {
             return;
         }
@@ -158,8 +154,8 @@ export class MainGame extends Phaser.Scene {
         //  We need to make sure there is only one pair in the grid
         //  Let's create an array with all possible frames in it:
 
-        let frames = Phaser.Utils.Array.NumberArray(1, 40);
-        let selected = Phaser.Utils.Array.NumberArray(0, 15);
+        let frames = Phaser.Utils.Array.NumberArray(1, 40) as number[];
+        let selected = Phaser.Utils.Array.NumberArray(0, 15) as number[];
         let children = this.emojis.getChildren();
 
         //  Now we pick 16 random values, removing each one from the array so we can't pick it again
@@ -168,12 +164,12 @@ export class MainGame extends Phaser.Scene {
         for (let i = 0; i < 16; i++) {
             let frame = Phaser.Utils.Array.RemoveRandomElement(frames);
 
-            children[i].setFrame('smile' + frame);
+            (children[i] as any).setFrame('smile' + frame);
         }
 
         //  Finally, pick two random children and make them a pair:
-        let index1 = Phaser.Utils.Array.RemoveRandomElement(selected);
-        let index2 = Phaser.Utils.Array.RemoveRandomElement(selected);
+        let index1 = Number(Phaser.Utils.Array.RemoveRandomElement(selected));
+        let index2 = Number(Phaser.Utils.Array.RemoveRandomElement(selected));
 
         this.child1 = children[index1];
         this.child2 = children[index2];
