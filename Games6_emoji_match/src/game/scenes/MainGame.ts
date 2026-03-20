@@ -175,7 +175,7 @@ export class MainGame extends Phaser.Scene {
         this.child2 = children[index2];
 
         //  Set the frame to match
-        this.child2.setFrame(this.child1.frame.name);
+        (this.child2 as any).setFrame((this.child1 as any).frame.name);
 
         console.log('Pair: ', index1, index2);
 
@@ -212,8 +212,8 @@ export class MainGame extends Phaser.Scene {
 
     gameOver() {
         //  Show them where the match actually was
-        this.circle1.setStrokeStyle(4, 0xfc29a6).setPosition(this.child1.x, this.child1.y).setVisible(true);
-        this.circle2.setStrokeStyle(4, 0xfc29a6).setPosition(this.child2.x, this.child2.y).setVisible(true);
+        this.circle1.setStrokeStyle(4, 0xfc29a6).setPosition((this.child1 as any).x, (this.child1 as any).y).setVisible(true);
+        this.circle2.setStrokeStyle(4, 0xfc29a6).setPosition((this.child2 as any).x, (this.child2 as any).y).setVisible(true);
 
         this.input.off('gameobjectdown', this.selectEmoji, this);
 
