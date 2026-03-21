@@ -1,14 +1,20 @@
-import {Scene, Math} from "phaser";
+import {Math, Scene} from "phaser";
+import Text = Phaser.GameObjects.Text;
+import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
+import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
+import Group = Phaser.Physics.Arcade.Group;
+import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+
 
 export class PhaserPlatformerGame extends Scene {
-    scoreText;
+    scoreText!: Text;
     gameOver = false;
     score = 0;
-    cursors;
-    platforms;
-    bombs;
-    stars;
-    player;
+    cursors!: CursorKeys;
+    platforms: StaticGroup;
+    bombs!: Group;
+    stars!: Group;
+    player!: SpriteWithDynamicBody;
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
@@ -63,7 +69,7 @@ export class PhaserPlatformerGame extends Scene {
         });
 
         //  Input Events
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard!.createCursorKeys();
 
         //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
         this.stars = this.physics.add.group({

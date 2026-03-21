@@ -1,5 +1,5 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
-import {PhaserPlatformerGame} from "./PhaserPlatformerGame";
+import {PhaserPlatformerGame} from "./PhaserPlatformerGame.ts";
 
 const config: Types.Core.GameConfig = {
     type: AUTO,
