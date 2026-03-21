@@ -4,6 +4,7 @@ import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
 import Group = Phaser.Physics.Arcade.Group;
 import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+import GameObject = Phaser.GameObjects.GameObject;
 
 
 export class PhaserPlatformerGame extends Scene {
@@ -78,17 +79,18 @@ export class PhaserPlatformerGame extends Scene {
             setXY: {x: 12, y: 0, stepX: 70}
         });
 
-        this.stars.children.iterate(child => {
+        this.stars.children.iterate((child: GameObject) => {
 
             //  Give each star a slightly different bounce
-            child.setBounceY(Math.FloatBetween(0.4, 0.8));
+            (child as SpriteWithDynamicBody).setBounceY(Math.FloatBetween(0.4, 0.8));
+            return true;
 
         });
 
         this.bombs = this.physics.add.group();
 
         //  The score
-        this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+        this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', color: '#000'});
 
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(this.player, this.platforms);
@@ -96,9 +98,9 @@ export class PhaserPlatformerGame extends Scene {
         this.physics.add.collider(this.bombs, this.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+        this.physics.add.overlap(this.player, this.stars, this.collectStar, undefined, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        this.physics.add.collider(this.player, this.bombs, this.hitBomb, undefined, this);
     }
 
     update() {
