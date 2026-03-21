@@ -1,4 +1,6 @@
-export class Example extends Phaser.Scene {
+import {Scene, Math} from "phaser";
+
+export class PhaserPlatformerGame extends Scene {
     scoreText;
     gameOver = false;
     score = 0;
@@ -73,7 +75,7 @@ export class Example extends Phaser.Scene {
         this.stars.children.iterate(child => {
 
             //  Give each star a slightly different bounce
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            child.setBounceY(Math.FloatBetween(0.4, 0.8));
 
         });
 
@@ -132,12 +134,12 @@ export class Example extends Phaser.Scene {
 
             });
 
-            const x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+            const x = (player.x < 400) ? Math.Between(400, 800) : Math.Between(0, 400);
 
             const bomb = this.bombs.create(x, 16, 'bomb');
             bomb.setBounce(1);
             bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            bomb.setVelocity(Math.Between(-200, 200), 20);
 
         }
     }

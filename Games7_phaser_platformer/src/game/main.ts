@@ -1,5 +1,5 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
-import {Example} from "./part10";
+import {PhaserPlatformerGame} from "./PhaserPlatformerGame";
 
 const config: Types.Core.GameConfig = {
     type: AUTO,
@@ -18,7 +18,7 @@ const config: Types.Core.GameConfig = {
         autoCenter: Scale.CENTER_BOTH
     },
     scene: [
-        Example
+        PhaserPlatformerGame
     ]
 };
 
