@@ -5,6 +5,7 @@ import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
 import Group = Phaser.Physics.Arcade.Group;
 import SpriteWithDynamicBody = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 import GameObject = Phaser.GameObjects.GameObject;
+import ArcadePhysicsCallback = Phaser.Types.Physics.Arcade.ArcadePhysicsCallback;
 
 
 export class PhaserPlatformerGame extends Scene {
@@ -98,9 +99,9 @@ export class PhaserPlatformerGame extends Scene {
         this.physics.add.collider(this.bombs, this.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.player, this.stars, this.collectStar, undefined, this);
+        this.physics.add.overlap(this.player, this.stars, this.collectStar as ArcadePhysicsCallback, undefined, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitBomb, undefined, this);
+        this.physics.add.collider(this.player, this.bombs, this.hitBomb as ArcadePhysicsCallback, undefined, this);
     }
 
     update() {
@@ -127,7 +128,7 @@ export class PhaserPlatformerGame extends Scene {
         }
     }
 
-    collectStar(player, star) {
+    collectStar(player: SpriteWithDynamicBody, star: SpriteWithDynamicBody) {
         star.disableBody(true, true);
 
         //  Add and update the score
@@ -136,10 +137,10 @@ export class PhaserPlatformerGame extends Scene {
 
         if (this.stars.countActive(true) === 0) {
             //  A new batch of stars to collect
-            this.stars.children.iterate(child => {
-
-                child.enableBody(true, child.x, 0, true, true);
-
+            this.stars.children.iterate((child: GameObject) => {
+                const spriteChild = child as SpriteWithDynamicBody;
+                spriteChild.enableBody(true, spriteChild.x, 0, true, true);
+                return true;
             });
 
             const x = (player.x < 400) ? Math.Between(400, 800) : Math.Between(0, 400);
@@ -152,7 +153,7 @@ export class PhaserPlatformerGame extends Scene {
         }
     }
 
-    hitBomb(player, bomb) {
+    hitBomb(player: SpriteWithDynamicBody, _bomb: SpriteWithDynamicBody) {
         this.physics.pause();
 
         player.setTint(0xff0000);
