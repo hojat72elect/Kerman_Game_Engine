@@ -2,14 +2,15 @@ import {Math, Scene} from "phaser";
 import Image = Phaser.GameObjects.Image;
 import Text = Phaser.GameObjects.Text;
 import String = Phaser.Utils.String;
+import Tween = Phaser.Tweens.Tween;
 
 export class FloodFillGame extends Scene {
 
     allowClick = true;
     arrow!: Image;
     cursor: Image;
-    cursorTween;
-    monsterTween;
+    cursorTween : Tween;
+    monsterTween: Tween;
 
     icon1 = {shadow: null, monster: null};
     icon2 = {shadow: null, monster: null};
@@ -248,7 +249,7 @@ export class FloodFillGame extends Scene {
             to: 25,
             ease: 'Power1',
             onUpdate: tween => {
-                this.text2.setText(Phaser.Utils.String.Pad(tween.getValue().toFixed(), 2, '0', 1));
+                this.text2.setText(Phaser.Utils.String.Pad(tween.getValue()!.toFixed(), 2, '0', 1));
             },
             delay: i
         });
@@ -273,19 +274,15 @@ export class FloodFillGame extends Scene {
 
         //  Cheat codes :)
 
-        this.input.keyboard!.on('keydown-M', function () {
-
+        this.input.keyboard!.on('keydown-M', () => {
             this.moves++;
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
+        });
 
-        }, this);
-
-        this.input.keyboard!.on('keydown-X', function () {
-
+        this.input.keyboard!.on('keydown-X',  () => {
             this.moves--;
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
-
-        }, this);
+        });
     }
 
     stopInputEvents() {
@@ -334,7 +331,7 @@ export class FloodFillGame extends Scene {
     }
 
     onIconOut(_: any, gameObject: any) {
-        this.monsterTween.stop(0);
+        this.monsterTween.stop();
 
         gameObject.getData('monster').setY(gameObject.y);
 
