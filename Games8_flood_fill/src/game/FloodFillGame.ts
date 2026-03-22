@@ -9,7 +9,7 @@ export class FloodFillGame extends Scene {
     allowClick = true;
     arrow!: Image;
     cursor: Image;
-    cursorTween : Tween;
+    cursorTween: Tween;
     monsterTween: Tween;
 
     icon1 = {shadow: null, monster: null};
@@ -279,7 +279,7 @@ export class FloodFillGame extends Scene {
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
         });
 
-        this.input.keyboard!.on('keydown-X',  () => {
+        this.input.keyboard!.on('keydown-X', () => {
             this.moves--;
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
         });
@@ -350,9 +350,7 @@ export class FloodFillGame extends Scene {
             return;
         }
 
-        const icon = gameObject;
-
-        const newColor = icon.getData('color');
+        const newColor = gameObject.getData('color');
 
         //  Valid color?
         if (newColor === this.currentColor) {
@@ -426,7 +424,7 @@ export class FloodFillGame extends Scene {
             // @ts-ignore
             const emitter = this.emitters[oldBlockColor];
 
-            this.time.delayedCall(t, function (block:any, blockColor:any) {
+            this.time.delayedCall(t, function (block: any, blockColor: any) {
 
                 block.setFrame(blockColor);
 
@@ -437,8 +435,7 @@ export class FloodFillGame extends Scene {
             t += inc;
         }
 
-        this.time.delayedCall(t, function () {
-
+        this.time.delayedCall(t, () => {
             this.allowClick = true;
 
             if (this.checkWon()) {
@@ -446,7 +443,6 @@ export class FloodFillGame extends Scene {
             } else if (this.moves === 0) {
                 this.gameLost();
             }
-
         }, [], this);
     }
 
