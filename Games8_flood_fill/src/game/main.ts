@@ -1,5 +1,5 @@
 import {WEBGL, Game, Scale, Types} from 'phaser';
-import {Flood} from "./flood-fill";
+import {FloodFillGame} from "./FloodFillGame.ts";
 
 const config: Types.Core.GameConfig = {
     type: WEBGL,
@@ -19,7 +19,7 @@ const config: Types.Core.GameConfig = {
         autoCenter: Scale.CENTER_BOTH
     },
     scene: [
-        Flood
+        FloodFillGame
     ]
 };
 

@@ -1,50 +1,42 @@
-export var Flood = new Phaser.Class({
+import {Math, Scene} from "phaser";
+import Image = Phaser.GameObjects.Image;
+import Text = Phaser.GameObjects.Text;
+import String = Phaser.Utils.String;
 
-    Extends: Phaser.Scene,
+export class FloodFillGame extends Scene {
 
-    initialize:
+    allowClick = true;
+    arrow!: Image;
+    cursor: Image;
+    cursorTween;
+    monsterTween;
 
-        function Flood() {
-            Phaser.Scene.call(this, {key: 'flood'});
+    icon1 = {shadow: null, monster: null};
+    icon2 = {shadow: null, monster: null};
+    icon3 = {shadow: null, monster: null};
+    icon4 = {shadow: null, monster: null};
+    icon5 = {shadow: null, monster: null};
+    icon6 = {shadow: null, monster: null};
 
-            this.allowClick = true;
+    gridBG: Image;
+    instructions: Image;
+    text1: Text;
+    text2: Text;
+    text3: Text;
+    currentColor = '';
+    emitters = {};
+    grid: Image[][] = [];
+    matched: any[] = [];
+    moves = 25;
+    frames = ['blue', 'green', 'grey', 'purple', 'red', 'yellow'];
 
-            this.arrow;
-            this.cursor;
-            this.cursorTween;
-            this.monsterTween;
 
-            this.icon1 = {shadow: null, monster: null};
-            this.icon2 = {shadow: null, monster: null};
-            this.icon3 = {shadow: null, monster: null};
-            this.icon4 = {shadow: null, monster: null};
-            this.icon5 = {shadow: null, monster: null};
-            this.icon6 = {shadow: null, monster: null};
-
-            this.gridBG;
-
-            this.instructions;
-            this.text1;
-            this.text2;
-            this.text3;
-
-            this.currentColor = '';
-
-            this.emitters = {};
-
-            this.grid = [];
-            this.matched = [];
-
-            this.moves = 25;
-
-            this.frames = ['blue', 'green', 'grey', 'purple', 'red', 'yellow'];
-        },
-
-    preload: function () {
+    preload() {
         this.load.atlas('flood', 'assets/blobs.png', 'assets/blobs.json');
-    },
+    }
 
-    create: function () {
+    create() {
+
         this.add.image(400, 300, 'flood', 'background');
         this.gridBG = this.add.image(400, 600 + 300, 'flood', 'grid');
 
@@ -61,15 +53,15 @@ export var Flood = new Phaser.Class({
 
         this.grid = [];
 
-        for (var x = 0; x < 14; x++) {
+        for (let x = 0; x < 14; x++) {
             this.grid[x] = [];
 
-            for (var y = 0; y < 14; y++) {
-                var sx = 166 + (x * 36);
-                var sy = 66 + (y * 36);
-                var color = Phaser.Math.Between(0, 5);
+            for (let y = 0; y < 14; y++) {
+                const sx = 166 + (x * 36);
+                const sy = 66 + (y * 36);
+                const color = Math.Between(0, 5);
 
-                var block = this.add.image(sx, -600 + sy, 'flood', this.frames[color]);
+                const block: Image = this.add.image(sx, -600 + sy, 'flood', this.frames[color]);
 
                 block.setData('oldColor', color);
                 block.setData('color', color);
@@ -83,46 +75,50 @@ export var Flood = new Phaser.Class({
         //  Do a few floods just to make it a little easier starting off
         this.helpFlood();
 
-        for (var i = 0; i < this.matched.length; i++) {
-            var block = this.matched[i];
+        for (let i = 0; i < this.matched.length; i++) {
+            const block = this.matched[i];
 
             block.setFrame(this.frames[block.getData('color')]);
         }
 
         this.currentColor = this.grid[0][0].getData('color');
 
-        for (var i = 0; i < this.frames.length; i++) {
+        for (let i = 0; i < this.frames.length; i++) {
             this.createEmitter(this.frames[i]);
         }
 
         this.createArrow();
 
-        this.text1 = this.add.text(684, 30, 'Moves', { fontSize: '20px', fill: '#fff' }).setAlpha(0);
-        this.text2 = this.add.text(694, 60, '00', { fontSize: '40px', fill: '#fff' }).setAlpha(0);
-        this.text3 = this.add.text(180, 200, 'So close!\n\nClick to\ntry again', { fontSize: '48px', fill: '#fff', align: 'center' }).setAlpha(0);
+        this.text1 = this.add.text(684, 30, 'Moves', {fontSize: '20px', color: '#fff'}).setAlpha(0);
+        this.text2 = this.add.text(694, 60, '00', {fontSize: '40px', color: '#fff'}).setAlpha(0);
+        this.text3 = this.add.text(180, 200, 'So close!\n\nClick to\ntry again', {
+            fontSize: '48px',
+            color: '#fff',
+            align: 'center'
+        }).setAlpha(0);
 
         this.instructions = this.add.image(400, 300, 'flood', 'instructions').setAlpha(0);
 
         this.revealGrid();
-    },
+    }
 
-    helpFlood: function () {
-        for (var i = 0; i < 8; i++) {
-            var x = Phaser.Math.Between(0, 13);
-            var y = Phaser.Math.Between(0, 13);
+    helpFlood() {
+        for (let i = 0; i < 8; i++) {
+            const x = Math.Between(0, 13);
+            const y = Math.Between(0, 13);
 
-            var oldColor = this.grid[x][y].getData('color');
-            var newColor = oldColor + 1;
+            const oldColor = this.grid[x][y].getData('color') as number;
+            let newColor = oldColor + 1;
 
             if (newColor === 6) {
                 newColor = 0;
             }
 
-            this.floodFill(oldColor, newColor, x, y)
+            this.floodFill(oldColor, newColor, x, y);
         }
-    },
+    }
 
-    createArrow: function () {
+    createArrow() {
         this.arrow = this.add.image(109 - 24, 48, 'flood', 'arrow-white').setOrigin(0).setAlpha(0);
 
         this.tweens.add({
@@ -135,14 +131,14 @@ export var Flood = new Phaser.Class({
             repeat: -1
 
         });
-    },
+    }
 
-    createIcon: function (icon, color, x, y) {
-        var sx = (x < 400) ? -200 : 1000;
+    createIcon(icon: any, color: string, x: number, y: number) {
+        const sx: number = (x < 400) ? -200 : 1000;
 
         icon.monster = this.add.image(sx, y, 'flood', 'icon-' + color).setOrigin(0);
 
-        var shadow = this.add.image(sx, y, 'flood', 'shadow');
+        const shadow = this.add.image(sx, y, 'flood', 'shadow');
 
         shadow.setData('color', this.frames.indexOf(color));
 
@@ -155,20 +151,21 @@ export var Flood = new Phaser.Class({
         shadow.setInteractive();
 
         icon.shadow = shadow;
-    },
+    }
 
-    revealGrid: function () {
+    revealGrid() {
+
         this.tweens.add({
             targets: this.gridBG,
             y: 300,
             ease: 'Power3'
         });
 
-        var i = 800;
+        let i = 800;
 
-        for (var y = 13; y >= 0; y--) {
-            for (var x = 0; x < 14; x++) {
-                var block = this.grid[x][y];
+        for (let y = 13; y >= 0; y--) {
+            for (let x = 0; x < 14; x++) {
+                const block = this.grid[x][y];
 
                 this.tweens.add({
 
@@ -186,19 +183,19 @@ export var Flood = new Phaser.Class({
             }
         }
 
-        i -= 1000;
+        i -= 1_000;
 
         //  Icons
         this.tweens.add({
             targets: [this.icon1.shadow, this.icon1.monster],
-            x: this.icon1.shadow.getData('x'),
+            x: (this.icon1.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
 
         this.tweens.add({
             targets: [this.icon4.shadow, this.icon4.monster],
-            x: this.icon4.shadow.getData('x'),
+            x: (this.icon4.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
@@ -207,14 +204,14 @@ export var Flood = new Phaser.Class({
 
         this.tweens.add({
             targets: [this.icon2.shadow, this.icon2.monster],
-            x: this.icon2.shadow.getData('x'),
+            x: (this.icon2.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
 
         this.tweens.add({
             targets: [this.icon5.shadow, this.icon5.monster],
-            x: this.icon5.shadow.getData('x'),
+            x: (this.icon5.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
@@ -223,14 +220,14 @@ export var Flood = new Phaser.Class({
 
         this.tweens.add({
             targets: [this.icon3.shadow, this.icon3.monster],
-            x: this.icon3.shadow.getData('x'),
+            x: (this.icon3.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
 
         this.tweens.add({
             targets: [this.icon6.shadow, this.icon6.monster],
-            x: this.icon6.shadow.getData('x'),
+            x: (this.icon6.shadow as any).getData('x'),
             ease: 'Power3',
             delay: i
         });
@@ -266,40 +263,41 @@ export var Flood = new Phaser.Class({
         });
 
         this.time.delayedCall(i, this.startInputEvents, [], this);
-    },
+    }
 
-    startInputEvents: function () {
+    startInputEvents() {
+
         this.input.on('gameobjectover', this.onIconOver, this);
         this.input.on('gameobjectout', this.onIconOut, this);
         this.input.on('gameobjectdown', this.onIconDown, this);
 
-        //  Cheat mode :)
+        //  Cheat codes :)
 
-        this.input.keyboard.on('keydown-M', function () {
+        this.input.keyboard!.on('keydown-M', function () {
 
             this.moves++;
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
 
         }, this);
 
-        this.input.keyboard.on('keydown-X', function () {
+        this.input.keyboard!.on('keydown-X', function () {
 
             this.moves--;
             this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
 
         }, this);
-    },
+    }
 
-    stopInputEvents: function () {
+    stopInputEvents() {
         this.input.off('gameobjectover', this.onIconOver);
         this.input.off('gameobjectout', this.onIconOut);
         this.input.off('gameobjectdown', this.onIconDown);
-    },
+    }
 
-    onIconOver: function (pointer, gameObject) {
-        var icon = gameObject;
+    onIconOver(_: any, gameObject: any) {
+        const icon = gameObject;
 
-        var newColor = icon.getData('color');
+        const newColor = icon.getData('color');
 
         //  Valid color?
         if (newColor !== this.currentColor) {
@@ -321,7 +319,7 @@ export var Flood = new Phaser.Class({
         this.arrow.setFrame('arrow-' + this.frames[newColor]);
 
         //  Jiggle the monster :)
-        var monster = icon.getData('monster');
+        const monster = icon.getData('monster');
 
         this.children.bringToTop(monster);
 
@@ -333,9 +331,9 @@ export var Flood = new Phaser.Class({
             duration: 300,
             ease: 'Power2'
         });
-    },
+    }
 
-    onIconOut: function (pointer, gameObject) {
+    onIconOut(_: any, gameObject: any) {
         this.monsterTween.stop(0);
 
         gameObject.getData('monster').setY(gameObject.y);
@@ -348,25 +346,23 @@ export var Flood = new Phaser.Class({
         });
 
         this.arrow.setFrame('arrow-white');
-    },
+    }
 
-    onIconDown: function (pointer, gameObject) {
+    onIconDown(_: any, gameObject: any) {
         if (!this.allowClick) {
             return;
         }
 
-        var icon = gameObject;
+        const icon = gameObject;
 
-        var newColor = icon.getData('color');
+        const newColor = icon.getData('color');
 
         //  Valid color?
         if (newColor === this.currentColor) {
             return;
         }
 
-        var oldColor = this.grid[0][0].getData('color');
-
-        // console.log('starting flood from', oldColor, this.frames[oldColor], 'to', newColor, this.frames[newColor]);
+        const oldColor = this.grid[0][0].getData('color');
 
         if (oldColor !== newColor) {
             this.currentColor = newColor;
@@ -383,7 +379,7 @@ export var Flood = new Phaser.Class({
 
             this.moves--;
 
-            this.text2.setText(Phaser.Utils.String.Pad(this.moves, 2, '0', 1));
+            this.text2.setText(String.Pad(this.moves, 2, '0', 1));
 
             this.floodFill(oldColor, newColor, 0, 0);
 
@@ -391,9 +387,10 @@ export var Flood = new Phaser.Class({
                 this.startFlow();
             }
         }
-    },
+    }
 
-    createEmitter: function (color) {
+    createEmitter(color: string) {
+        // @ts-ignore
         this.emitters[color] = this.add.particles(0, 0, 'flood', {
             frame: color,
             lifespan: 1000,
@@ -404,13 +401,13 @@ export var Flood = new Phaser.Class({
             blendMode: 'ADD',
             emitting: false
         });
-    },
+    }
 
-    startFlow: function () {
+    startFlow() {
         this.matched.sort(function (a, b) {
 
-            var aDistance = Phaser.Math.Distance.Between(a.x, a.y, 166, 66);
-            var bDistance = Phaser.Math.Distance.Between(b.x, b.y, 166, 66);
+            const aDistance = Math.Distance.Between(a.x, a.y, 166, 66);
+            const bDistance = Math.Distance.Between(b.x, b.y, 166, 66);
 
             return aDistance - bDistance;
 
@@ -418,20 +415,21 @@ export var Flood = new Phaser.Class({
 
         //  Swap the sprites
 
-        var t = 0;
-        var inc = (this.matched.length > 98) ? 6 : 12;
+        let t: number = 0;
+        const inc: number = (this.matched.length > 98) ? 6 : 12;
 
         this.allowClick = false;
 
-        for (var i = 0; i < this.matched.length; i++) {
-            var block = this.matched[i];
+        for (let i = 0; i < this.matched.length; i++) {
+            const block = this.matched[i];
 
-            var blockColor = this.frames[block.getData('color')];
-            var oldBlockColor = this.frames[block.getData('oldColor')];
+            const blockColor = this.frames[block.getData('color')];
+            const oldBlockColor = this.frames[block.getData('oldColor')];
 
-            var emitter = this.emitters[oldBlockColor];
+            // @ts-ignore
+            const emitter = this.emitters[oldBlockColor];
 
-            this.time.delayedCall(t, function (block, blockColor) {
+            this.time.delayedCall(t, function (block:any, blockColor:any) {
 
                 block.setFrame(blockColor);
 
@@ -453,13 +451,13 @@ export var Flood = new Phaser.Class({
             }
 
         }, [], this);
-    },
+    }
 
-    checkWon: function () {
-        var topLeft = this.grid[0][0].getData('color');
+    checkWon() {
+        const topLeft = this.grid[0][0].getData('color');
 
-        for (var x = 0; x < 14; x++) {
-            for (var y = 0; y < 14; y++) {
+        for (let x = 0; x < 14; x++) {
+            for (let y = 0; y < 14; y++) {
                 if (this.grid[x][y].getData('color') !== topLeft) {
                     return false;
                 }
@@ -467,9 +465,9 @@ export var Flood = new Phaser.Class({
         }
 
         return true;
-    },
+    }
 
-    clearGrid: function () {
+    clearGrid() {
         //  Hide everything :)
 
         this.tweens.add({
@@ -488,11 +486,11 @@ export var Flood = new Phaser.Class({
             delay: 500
         });
 
-        var i = 500;
+        let i = 500;
 
-        for (var y = 13; y >= 0; y--) {
-            for (var x = 0; x < 14; x++) {
-                var block = this.grid[x][y];
+        for (let y = 13; y >= 0; y--) {
+            for (let x = 0; x < 14; x++) {
+                const block = this.grid[x][y];
 
                 this.tweens.add({
 
@@ -512,15 +510,15 @@ export var Flood = new Phaser.Class({
         }
 
         return i;
-    },
+    }
 
-    gameLost: function () {
+    gameLost() {
         this.stopInputEvents();
 
         this.text1.setText("Lost!");
         this.text2.setText(':(');
 
-        var i = this.clearGrid();
+        const i = this.clearGrid();
 
         this.text3.setAlpha(0);
         this.text3.setVisible(true);
@@ -533,9 +531,9 @@ export var Flood = new Phaser.Class({
         });
 
         this.input.once('pointerdown', this.resetGame, this);
-    },
+    }
 
-    resetGame: function () {
+    resetGame() {
         this.text1.setText("Moves");
         this.text2.setText("00");
         this.text3.setVisible(false);
@@ -560,14 +558,14 @@ export var Flood = new Phaser.Class({
             delay: 500
         });
 
-        var i = 500;
+        let delayTime = 500;
 
-        for (var y = 13; y >= 0; y--) {
-            for (var x = 0; x < 14; x++) {
-                var block = this.grid[x][y];
+        for (let y = 13; y >= 0; y--) {
+            for (let x = 0; x < 14; x++) {
+                const block = this.grid[x][y];
 
                 //  Set a new color
-                var color = Phaser.Math.Between(0, 5);
+                const color = Phaser.Math.Between(0, 5);
 
                 block.setFrame(this.frames[color]);
 
@@ -583,19 +581,19 @@ export var Flood = new Phaser.Class({
 
                     ease: 'Power3',
                     duration: 800,
-                    delay: i
+                    delay: delayTime
 
                 });
 
-                i += 10;
+                delayTime += 10;
             }
         }
 
         //  Do a few floods just to make it a little easier starting off
         this.helpFlood();
 
-        for (var i = 0; i < this.matched.length; i++) {
-            var block = this.matched[i];
+        for (let i = 0; i < this.matched.length; i++) {
+            const block = this.matched[i];
 
             block.setFrame(this.frames[block.getData('color')]);
         }
@@ -607,27 +605,28 @@ export var Flood = new Phaser.Class({
             to: 25,
             ease: 'Power1',
             onUpdate: tween => {
-                this.text2.setText(Phaser.Utils.String.Pad(tween.getValue().toFixed(), 2, '0', 1));
+                this.text2.setText(Phaser.Utils.String.Pad(tween.getValue()!.toFixed(), 2, '0', 1));
             },
-            delay: i
+            delay: delayTime
         });
 
         this.moves = 25;
 
-        this.time.delayedCall(i, this.startInputEvents, [], this);
-    },
+        this.time.delayedCall(delayTime, this.startInputEvents, [], this);
+    }
 
-    gameWon: function () {
+    gameWon() {
         this.stopInputEvents();
 
         this.text1.setText("Won!!");
         this.text2.setText(':)');
 
-        var i = this.clearGrid();
+        const i = this.clearGrid();
 
         //  Put the winning monster in the middle
 
-        var monster = this.add.image(400, 300, 'flood', 'icon-' + this.frames[this.currentColor]);
+        // @ts-ignore
+        const monster = this.add.image(400, 300, 'flood', 'icon-' + this.frames[this.currentColor]);
 
         monster.setScale(0);
 
@@ -636,26 +635,28 @@ export var Flood = new Phaser.Class({
             scaleX: 4,
             scaleY: 4,
             angle: 360 * 4,
-            duration: 1000,
+            duration: 1_000,
             delay: i
         });
 
-        this.time.delayedCall(2000, this.boom, [], this);
-    },
+        this.time.delayedCall(2_000, this.boom, [], this);
+    }
 
-    boom: function () {
-        var color = Phaser.Math.RND.pick(this.frames);
+    boom() {
+        let color = Math.RND.pick(this.frames);
 
-        this.emitters[color].explode(8, Phaser.Math.Between(128, 672), Phaser.Math.Between(28, 572))
+        // @ts-ignore
+        this.emitters[color].explode(8, Math.Between(128, 672), Math.Between(28, 572))
 
-        color = Phaser.Math.RND.pick(this.frames);
+        color = Math.RND.pick(this.frames);
 
-        this.emitters[color].explode(8, Phaser.Math.Between(128, 672), Phaser.Math.Between(28, 572))
+        // @ts-ignore
+        this.emitters[color].explode(8, Math.Between(128, 672), Math.Between(28, 572))
 
         this.time.delayedCall(100, this.boom, [], this);
-    },
+    }
 
-    floodFill: function (oldColor, newColor, x, y) {
+    floodFill(oldColor: number, newColor: number, x: number, y: number) {
         if (oldColor === newColor || this.grid[x][y].getData('color') !== oldColor) {
             return;
         }
@@ -683,5 +684,4 @@ export var Flood = new Phaser.Class({
             this.floodFill(oldColor, newColor, x, y + 1);
         }
     }
-
-});
+}
