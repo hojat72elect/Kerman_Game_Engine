@@ -3,9 +3,9 @@ import {Scene} from "phaser";
 
 export class MineSweeperScene extends Scene {
 
-    width: any;
-    height: any;
-    bombs: any;
+    width: number;
+    height: number;
+    bombs: number;
     grid: Grid;
 
     constructor() {

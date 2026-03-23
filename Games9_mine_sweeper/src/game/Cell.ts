@@ -11,7 +11,7 @@ export class Cell {
     flagged: boolean;
     query: boolean;
     exploded: boolean;
-    value = 0;  //  0 = empty, 1,2,3,4,5,6,7,8 = number of adjacent bombs
+    value: number = 0;  //  0 = empty, 1,2,3,4,5,6,7,8 = number of adjacent bombs
     tile: any;
 
 
@@ -105,7 +105,7 @@ export class Cell {
     }
 
     onPointerUp() {
-        if (this.grid.button.frame.name === 2) {
+        if (this.grid.button.frame.name === "2") {
             this.grid.button.setFrame(0);
         }
     }

@@ -1,7 +1,41 @@
 import {Cell} from "./Cell.ts";
+import {Scene} from "phaser";
+import Vector2 = Phaser.Math.Vector2;
+import TimerEvent = Phaser.Time.TimerEvent;
+import Container = Phaser.GameObjects.Container;
+import Image = Phaser.GameObjects.Image;
 
 export class Grid {
-    constructor(scene, width, height, bombs) {
+
+    scene;
+    width;
+    height
+    size;
+    offset: Vector2;
+    timeCounter = 0;
+    bombQty;
+    bombsCounter;
+    playing = false;
+    populated = false;
+    timer: TimerEvent;
+
+    //  0 = waiting to create the grid
+    //  1 = playing
+    //  2 = game won
+    //  3 = game lost
+    state = 0;
+    data: any[] = [];
+    board: Container;
+
+    digit1: Image;
+    digit2: Image;
+    digit3: Image;
+    time1: Image;
+    time2: Image;
+    time3: Image;
+    button: Image;
+
+    constructor(scene: Scene, width: number, height: number, bombs: number) {
         this.scene = scene;
 
         this.width = width;
@@ -9,37 +43,16 @@ export class Grid {
         this.size = width * height;
         this.offset = new Phaser.Math.Vector2(12, 55);
 
-        this.timeCounter = 0;
         this.bombQty = bombs;
         this.bombsCounter = bombs;
 
-        this.playing = false;
-        this.populated = false;
-
+        // @ts-ignore
         this.timer = scene.time.addEvent();
-
-        //  0 = waiting to create the grid
-        //  1 = playing
-        //  2 = game won
-        //  3 = game lost
-        this.state = 0;
-
-        this.data = [];
 
         const x = Math.floor((scene.scale.width / 2) - (20 + (width * 16)) / 2);
         const y = Math.floor((scene.scale.height / 2) - (63 + (height * 16)) / 2);
 
         this.board = scene.add.container(x, y);
-
-        this.digit1;
-        this.digit2;
-        this.digit3;
-
-        this.time1;
-        this.time2;
-        this.time3;
-
-        this.button;
 
         this.createBackground();
         this.createCells();
@@ -130,7 +143,7 @@ export class Grid {
         board.add(this.button);
     }
 
-    updateBombs(diff) {
+    updateBombs(diff: number) {
         this.bombsCounter -= diff;
 
         this.updateDigits();
@@ -236,7 +249,7 @@ export class Grid {
         }
     }
 
-    generate(startIndex) {
+    generate(startIndex: number) {
         let qty = this.bombQty;
 
         const bombs = [];
@@ -256,7 +269,7 @@ export class Grid {
 
         } while (qty > 0);
 
-        bombs.forEach(cell => {
+        bombs.forEach((cell: any) => {
 
             //  Update the 8 cells around this bomb cell
 
@@ -291,13 +304,13 @@ export class Grid {
         }
     }
 
-    getCell(index) {
+    getCell(index: number) {
         const pos = Phaser.Math.ToXY(index, this.width, this.height);
 
         return this.data[pos.x][pos.y];
     }
 
-    getCellXY(x, y) {
+    getCellXY(x: number, y: number) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
@@ -305,7 +318,7 @@ export class Grid {
         return this.data[x][y];
     }
 
-    getAdjacentCells(cell) {
+    getAdjacentCells(cell: any) {
         return [
             //  Top-Left, Top-Middle, Top-Right
             this.getCellXY(cell.x - 1, cell.y - 1),
@@ -323,7 +336,7 @@ export class Grid {
         ];
     }
 
-    floodFill(x, y) {
+    floodFill(x: number, y: number) {
         const cell = this.getCellXY(x, y);
 
         if (cell && !cell.open && !cell.bomb) {
