@@ -1,4 +1,11 @@
+import Rectangle = Phaser.GameObjects.Rectangle;
+import Image = Phaser.GameObjects.Image;
+
 export class IntroScene extends Phaser.Scene {
+
+    highlight: Rectangle;
+    intro: Image;
+
     constructor() {
         super();
     }
@@ -23,7 +30,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     create() {
-        this.input.mouse.disableContextMenu();
+        this.input.mouse!.disableContextMenu();
 
         this.highlight = this.add.rectangle(0, 334, 800, 70, 0x0182fb).setOrigin(0).setAlpha(0.75);
 
@@ -62,7 +69,7 @@ export class IntroScene extends Phaser.Scene {
         });
     }
 
-    startGame(width, height, bombs) {
+    startGame(width: number, height: number, bombs: number) {
         this.scene.start('MineSweeper', {width, height, bombs});
     }
 }
