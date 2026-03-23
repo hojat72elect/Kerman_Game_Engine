@@ -1,5 +1,6 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
-import {IntroScene, MineSweeperScene} from "./mineSweeperScene";
+import {MineSweeperScene} from "./MineSweeperScene";
+import {IntroScene} from "./IntroScene";
 
 
 const config: Types.Core.GameConfig = {
