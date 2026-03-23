@@ -1,5 +1,21 @@
+import {Grid} from "./Grid.js";
+
 export class Cell {
-    constructor(grid, index, x, y) {
+
+    grid: Grid;
+    index: number;
+    x: number;
+    y: number;
+    open: boolean;
+    bomb: boolean;
+    flagged: boolean;
+    query: boolean;
+    exploded: boolean;
+    value = 0;  //  0 = empty, 1,2,3,4,5,6,7,8 = number of adjacent bombs
+    tile: any;
+
+
+    constructor(grid: Grid, index: number, x: number, y: number) {
         this.grid = grid;
 
         this.index = index;
@@ -12,9 +28,6 @@ export class Cell {
         this.flagged = false;
         this.query = false;
         this.exploded = false;
-
-        //  0 = empty, 1,2,3,4,5,6,7,8 = number of adjacent bombs
-        this.value = 0;
 
         this.tile = grid.scene.make.image({
             key: 'tiles',
@@ -45,7 +58,7 @@ export class Cell {
         this.tile.setFrame(0);
     }
 
-    onPointerDown(pointer) {
+    onPointerDown(pointer: any) {
         if (!this.grid.populated) {
             this.grid.generate(this.index);
         }

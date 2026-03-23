@@ -1,4 +1,4 @@
-import {Cell} from "./Cell.js";
+import {Cell} from "./Cell.ts";
 
 export class Grid {
     constructor(scene, width, height, bombs) {
