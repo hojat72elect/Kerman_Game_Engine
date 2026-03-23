@@ -1,6 +1,6 @@
 import {Cell} from "./Cell.js";
 
-export class NewGrid {
+export class Grid {
     constructor(scene, width, height, bombs) {
         this.scene = scene;
 

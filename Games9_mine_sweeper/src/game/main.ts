@@ -1,5 +1,5 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
-import {MineSweeperScene} from "./MineSweeperScene";
+import {MineSweeperScene} from "./MineSweeperScene.ts";
 import {IntroScene} from "./IntroScene";
 
 
