@@ -1,3 +1,7 @@
+import PostFXPipeline = Phaser.Renderer.WebGL.Pipelines.PostFXPipeline;
+import RenderTarget = Phaser.Renderer.WebGL.RenderTarget;
+import {Game} from "phaser";
+
 const fragShader = `
 #define SHADER_NAME SHINE_FS
 
@@ -38,12 +42,12 @@ void main ()
 }
 `;
 
-export class ShinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
+export class ShinePostFX extends PostFXPipeline {
     speed: number;
     lineWidth: number;
     gradient: number;
 
-    constructor(game: Phaser.Game) {
+    constructor(game: Game) {
         super({
             game,
             name: 'ShinePostFX',
@@ -62,7 +66,7 @@ export class ShinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline 
         this.set1f('uGradient', this.gradient);
     }
 
-    onDraw(renderTarget: Phaser.Renderer.WebGL.RenderTarget) {
+    onDraw(renderTarget: RenderTarget) {
         this.set2f('uResolution', renderTarget.width, renderTarget.height);
 
         this.bindAndDraw(renderTarget);
