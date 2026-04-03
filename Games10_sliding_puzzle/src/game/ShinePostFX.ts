@@ -39,7 +39,11 @@ void main ()
 `;
 
 export class ShinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
-    constructor(game) {
+    speed: number;
+    lineWidth: number;
+    gradient: number;
+
+    constructor(game: Phaser.Game) {
         super({
             game,
             name: 'ShinePostFX',
@@ -58,7 +62,7 @@ export class ShinePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline 
         this.set1f('uGradient', this.gradient);
     }
 
-    onDraw(renderTarget) {
+    onDraw(renderTarget: Phaser.Renderer.WebGL.RenderTarget) {
         this.set2f('uResolution', renderTarget.width, renderTarget.height);
 
         this.bindAndDraw(renderTarget);

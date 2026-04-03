@@ -1,8 +1,8 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
 import {MainMenu} from "./MainMenu";
-import {ShinePostFX} from "./ShinePostFX";
+import {ShinePostFX} from "./ShinePostFX.ts";
 import {WipePostFX} from "./WipePostFX";
-import {Preloader} from "./Preloader";
+import {Preloader} from "./Preloader.ts";
 import {PuzzleGame} from "./Game";
 
 const config: Types.Core.GameConfig = {
