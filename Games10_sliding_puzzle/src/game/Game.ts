@@ -1,4 +1,5 @@
 import Container = Phaser.GameObjects.Container;
+import Image = Phaser.GameObjects.Image;
 
 const SlidingPuzzle = {
     ALLOW_CLICK: 0,
@@ -18,7 +19,7 @@ const SlidingPuzzle = {
  * In this example template there are 3 pictures, and as you solve them, the walker
  * increases in complexity each time, making it harder to solve.
  *
- * This web site has some creative tips on solving Sliding Puzzles:
+ * This website has some creative tips on solving Sliding Puzzles:
  * http://www.nordinho.net/vbull/blogs/lunanik/6131-slider-puzzles-solved-once-all.html
  */
 export class PuzzleGame extends Phaser.Scene {
@@ -54,23 +55,20 @@ export class PuzzleGame extends Phaser.Scene {
 
     slices: any[] = [];
 
-    pieces: Container | null;
+    pieces: Container | null = null;
+    spacer: Image | null = null;
+    lastMove: number | null = null;
+    action = SlidingPuzzle.ALLOW_CLICK;
 
     constructor() {
         super('Game');
-
-        this.pieces = null;
-        this.spacer = null;
-        this.lastMove = null;
-
-        this.action = SlidingPuzzle.ALLOW_CLICK;
     }
 
     create() {
         this.add.image(512, 384, 'background');
         this.add.image(512, 384, 'box-inside');
 
-        window.solve = () => {
+        (window as any).solve = () => {
             this.nextRound();
         };
 
@@ -128,10 +126,10 @@ export class PuzzleGame extends Phaser.Scene {
 
                 const slice = this.textures.addDynamicTexture(`slice${i}`, pieceWidth, pieceHeight);
 
-                const ox = 0 + (x / this.rows);
-                const oy = 0 + (y / this.columns);
+                const ox = x / this.rows;
+                const oy = y / this.columns;
 
-                slice.stamp(key, null, 0, 0, {originX: ox, originY: oy});
+                slice!.stamp(key, undefined, 0, 0, {originX: ox, originY: oy});
 
                 this.slices.push(slice);
 
@@ -159,8 +157,8 @@ export class PuzzleGame extends Phaser.Scene {
         }
 
         //  The last piece will be our 'spacer' to slide in to
-        this.spacer = this.pieces.getAt(this.pieces.length - 1);
-        this.spacer.alpha = 0;
+        this.spacer = this.pieces.getAt(this.pieces.length - 1) as Image;
+        this.spacer!.alpha = 0;
 
         this.lastMove = null;
 
@@ -177,8 +175,8 @@ export class PuzzleGame extends Phaser.Scene {
         //  Push all available moves into this array
         const moves = [];
 
-        const spacerCol = this.spacer.data.get('column');
-        const spacerRow = this.spacer.data.get('row');
+        const spacerCol = this.spacer!.data.get('column') as number;
+        const spacerRow = this.spacer!.data.get('row') as number;
 
         if (spacerCol > 0 && this.lastMove !== Phaser.DOWN) {
             moves.push(Phaser.UP);
@@ -222,35 +220,22 @@ export class PuzzleGame extends Phaser.Scene {
     /**
      * Swaps the spacer with the piece in the given row and column.
      */
-    swapPiece(row, column) {
+    swapPiece(row: number, column: number) {
         //  row and column is the new destination of the spacer
 
-        const piece = this.getPiece(row, column);
+        const piece = this.getPiece(row, column) as Image;
 
         const spacer = this.spacer;
-        const x = spacer.x;
-        const y = spacer.y;
+        const x = spacer!.x;
+        const y = spacer!.y;
 
-        // piece.data.set({
-        //     row: spacer.data.get('row'),
-        //     column: spacer.data.get('column')
-        // });
+        piece.data.values.row = spacer!.data.values.row;
+        piece.data.values.column = spacer!.data.values.column;
 
-        piece.data.values.row = spacer.data.values.row;
-        piece.data.values.column = spacer.data.values.column;
+        spacer!.data.values.row = row;
+        spacer!.data.values.column = column;
 
-        spacer.data.values.row = row;
-        spacer.data.values.column = column;
-
-        // spacer.data.set({
-        //     row,
-        //     column
-        // });
-
-        // this.spacer.data.row = row;
-        // this.spacer.data.column = column;
-
-        spacer.setPosition(piece.x, piece.y);
+        spacer!.setPosition(piece.x, piece.y);
 
         //  If we don't want them to watch the puzzle get shuffled, then just
         //  set the piece to the new position immediately.
@@ -289,9 +274,9 @@ export class PuzzleGame extends Phaser.Scene {
     /**
      * Gets the piece at row and column.
      */
-    getPiece(row, column) {
-        for (let i = 0; i < this.pieces.length; i++) {
-            const piece = this.pieces.getAt(i);
+    getPiece(row: number, column: number) {
+        for (let i = 0; i < this.pieces!.length; i++) {
+            const piece = this.pieces!.getAt(i);
 
             if (piece.data.get('row') === row && piece.data.get('column') === column) {
                 return piece;
@@ -313,7 +298,7 @@ export class PuzzleGame extends Phaser.Scene {
      * It first checks to see if the piece is adjacent to the 'spacer', and if not, bails out.
      * If it is, the two pieces are swapped by calling `this.slidePiece`.
      */
-    checkPiece(piece) {
+    checkPiece(piece: Image) {
         if (this.action !== SlidingPuzzle.ALLOW_CLICK) {
             return;
         }
@@ -325,7 +310,7 @@ export class PuzzleGame extends Phaser.Scene {
         //  Columns = vertical (y) axis
         //  Rows = horizontal (x) axis
 
-        const spacer = this.spacer;
+        const spacer = this.spacer!;
 
         if (piece.data.values.row === spacer.data.values.row) {
             if (spacer.data.values.column === piece.data.values.column - 1) {
