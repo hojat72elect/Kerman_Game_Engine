@@ -441,11 +441,11 @@ export class PuzzleGame extends Phaser.Scene {
             size = 3;
         }
 
-        this.reveal = this.add.image(this.pieces!.x, this.pieces!.y, nextPhoto).setOrigin(0, 0);
+        const reveal = this.add.image(this.pieces!.x, this.pieces!.y, nextPhoto).setOrigin(0, 0);
 
-        this.reveal.setPostPipeline('WipePostFX');
+        reveal.setPostPipeline('WipePostFX');
 
-        const pipeline = this.reveal.getPostPipeline('WipePostFX');
+        const pipeline = reveal.getPostPipeline('WipePostFX');
 
         pipeline.setTopToBottom();
         pipeline.setRevealEffect();
@@ -458,7 +458,7 @@ export class PuzzleGame extends Phaser.Scene {
 
                 this.photo = nextPhoto;
                 this.iterations = iterations;
-                this.reveal.destroy();
+                reveal.destroy();
 
                 this.startPuzzle(nextPhoto, size, size);
 
