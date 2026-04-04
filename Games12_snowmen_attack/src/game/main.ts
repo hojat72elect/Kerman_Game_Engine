@@ -1,5 +1,5 @@
 import {Game, Scale, Types, AUTO} from 'phaser';
-import {Boot} from "./Boot";
+import {Boot} from "./Boot.ts";
 import {Preloader} from "./Preloader";
 import {MainMenu} from "./MainMenu";
 import {MainGame} from "./Game";
