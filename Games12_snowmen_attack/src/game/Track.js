@@ -1,6 +1,6 @@
 import Snowman from './Snowman.js';
 import PlayerSnowball from './PlayerSnowball.js';
-import EnemySnowball from './EnemySnowball.js';
+import {EnemySnowball} from './EnemySnowball.js';
 
 export default class Track
 {

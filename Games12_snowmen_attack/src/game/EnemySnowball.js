@@ -1,14 +1,11 @@
-export default class EnemySnowball extends Phaser.Physics.Arcade.Sprite
-{
-    constructor (scene, x, y, key, frame)
-    {
+export class EnemySnowball extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, key, frame) {
         super(scene, x, y, key, frame);
 
         this.setScale(0.5);
     }
 
-    fire (x, y)
-    {
+    fire(x, y) {
         this.body.enable = true;
         this.body.reset(x + 10, y - 44);
 
@@ -18,8 +15,7 @@ export default class EnemySnowball extends Phaser.Physics.Arcade.Sprite
         this.setVelocityX(200);
     }
 
-    stop ()
-    {
+    stop() {
         this.setActive(false);
         this.setVisible(false);
 
@@ -28,12 +24,10 @@ export default class EnemySnowball extends Phaser.Physics.Arcade.Sprite
         this.body.enable = false;
     }
 
-    preUpdate (time, delta)
-    {
+    preUpdate(time, delta) {
         super.preUpdate(time, delta);
 
-        if (this.x >= 970)
-        {
+        if (this.x >= 970) {
             this.stop();
 
             this.scene.gameOver();
