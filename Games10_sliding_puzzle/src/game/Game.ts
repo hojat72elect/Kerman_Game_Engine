@@ -1,3 +1,5 @@
+import Container = Phaser.GameObjects.Container;
+
 const SlidingPuzzle = {
     ALLOW_CLICK: 0,
     TWEENING: 1
@@ -52,6 +54,8 @@ export class PuzzleGame extends Phaser.Scene {
 
     slices: any[] = [];
 
+    pieces: Container | null;
+
     constructor() {
         super('Game');
 
@@ -78,7 +82,7 @@ export class PuzzleGame extends Phaser.Scene {
      * It takes an Image key and a width and height of the puzzle (in pieces, not pixels).
      * Read the comments within this function to find out what happens.
      */
-    startPuzzle(key, rows, columns) {
+    startPuzzle(key: string, rows: number, columns: number) {
         this.photo = key;
 
         //  The size if the puzzle, in pieces (not pixels)
