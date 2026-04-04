@@ -1,9 +1,10 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
-import {MainMenu} from "./MainMenu";
+import {MainMenu} from "./MainMenu.ts";
 import {ShinePostFX} from "./ShinePostFX.ts";
 import {WipePostFX} from "./WipePostFX.ts";
 import {Preloader} from "./Preloader.ts";
 import {PuzzleGame} from "./Game";
+// import WebGLPipeline = Phaser.Renderer.WebGL.WebGLPipeline;
 
 const config: Types.Core.GameConfig = {
     type: AUTO,
@@ -18,7 +19,7 @@ const config: Types.Core.GameConfig = {
     scene: [
         Preloader, MainMenu, PuzzleGame
     ],
-    pipeline: { ShinePostFX, WipePostFX }
+    pipeline: {ShinePostFX, WipePostFX}
 };
 
 const StartGame = (parent: string) => {

@@ -1,4 +1,8 @@
-export class MainMenu extends Phaser.Scene {
+import {Scene} from 'phaser';
+import {WipePostFX} from "./WipePostFX.ts";
+
+export class MainMenu extends Scene {
+
     constructor() {
         super('MainMenu');
     }
@@ -13,7 +17,7 @@ export class MainMenu extends Phaser.Scene {
         box.setPostPipeline('WipePostFX');
         logo.setPostPipeline('ShinePostFX');
 
-        const pipeline = box.getPostPipeline('WipePostFX');
+        const pipeline = box.getPostPipeline('WipePostFX') as WipePostFX;
 
         pipeline.setTopToBottom();
         pipeline.setRevealEffect();
