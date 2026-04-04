@@ -4,13 +4,10 @@ const SlidingPuzzle = {
 };
 
 /**
- * Sliding Puzzle Game Template
- * ----------------------------
- *
- * This is the classic Sliding Puzzle game. Unlike lots of implementations out there,
+ *This is the classic Sliding Puzzle game. Unlike lots of implementations out there,
  * we don't use a 'random' starting layout, as otherwise the puzzle will be unsolvable
- * 50% of the time. Instead we use a puzzle walker function. This allows you to see
- * the puzzle before-hand, and then it gets all manged up, ready for you to solve.
+ * 50% of the time. Instead, we use a puzzle walker function. This allows you to see
+ * the puzzle beforehand, and then it gets all manged up, ready for you to solve.
  *
  * You can control the number of iterations, or steps, that the walker goes through.
  * You can of course provide any image you like to the puzzle, and it'll adapt and resize
