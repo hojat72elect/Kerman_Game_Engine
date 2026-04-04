@@ -20,44 +20,44 @@ const SlidingPuzzle = {
  * http://www.nordinho.net/vbull/blogs/lunanik/6131-slider-puzzles-solved-once-all.html
  */
 export class PuzzleGame extends Phaser.Scene {
+
+    //  These are all set in the startPuzzle function
+    rows = 0;
+    columns = 0;
+
+    //  The width and height of each piece in the puzzle.
+    //  Again, this is set automatically in startPuzzle.
+    pieceWidth = 0;
+    pieceHeight = 0;
+
+    //  The speed at which the pieces slide, and the tween they use
+    slideSpeed = 300;
+    slideEase = 'power3';
+
+    //  The number of iterations the puzzle walker will go through when
+    //  scrambling up the puzzle. 10 is a nice and easy puzzle, but
+    //  push it higher for much harder ones.
+    iterations = 6;
+
+    //  The speed at which the pieces are shuffled at the start. This allows
+    //  the player to see the puzzle before trying to solve it. However if
+    //  you don't want this, just set the speed to zero and it'll appear
+    //  instantly 'scrambled'.
+    shuffleSpeed = 200;
+    shuffleEase = 'power1';
+
+    //  The image in the Cache to be used for the puzzle.
+    //  Set in the startPuzzle function.
+    photo = '';
+
+    slices: any[] = [];
+
     constructor() {
         super('Game');
 
-        //  These are all set in the startPuzzle function
-        this.rows = 0;
-        this.columns = 0;
-
-        //  The width and height of each piece in the puzzle.
-        //  Again, this is set automatically in startPuzzle.
-        this.pieceWidth = 0;
-        this.pieceHeight = 0;
-
         this.pieces = null;
         this.spacer = null;
-
-        //  The speed at which the pieces slide, and the tween they use
-        this.slideSpeed = 300;
-        this.slideEase = 'power3';
-
-        //  The number of iterations the puzzle walker will go through when
-        //  scrambling up the puzzle. 10 is a nice and easy puzzle, but
-        //  push it higher for much harder ones.
-        this.iterations = 6;
-
-        //  The speed at which the pieces are shuffled at the start. This allows
-        //  the player to see the puzzle before trying to solve it. However if
-        //  you don't want this, just set the speed to zero and it'll appear
-        //  instantly 'scrambled'.
-        this.shuffleSpeed = 200;
-        this.shuffleEase = 'power1';
-
         this.lastMove = null;
-
-        //  The image in the Cache to be used for the puzzle.
-        //  Set in the startPuzzle function.
-        this.photo = '';
-
-        this.slices = [];
 
         this.action = SlidingPuzzle.ALLOW_CLICK;
     }
