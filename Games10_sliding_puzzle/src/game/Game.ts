@@ -1,5 +1,7 @@
+import {Scene} from 'phaser';
 import Container = Phaser.GameObjects.Container;
 import Image = Phaser.GameObjects.Image;
+import {WipePostFX} from "./WipePostFX.ts";
 
 const SlidingPuzzle = {
     ALLOW_CLICK: 0,
@@ -22,7 +24,7 @@ const SlidingPuzzle = {
  * This website has some creative tips on solving Sliding Puzzles:
  * http://www.nordinho.net/vbull/blogs/lunanik/6131-slider-puzzles-solved-once-all.html
  */
-export class PuzzleGame extends Phaser.Scene {
+export class PuzzleGame extends Scene {
 
     //  These are all set in the startPuzzle function
     rows = 0;
@@ -445,7 +447,7 @@ export class PuzzleGame extends Phaser.Scene {
 
         reveal.setPostPipeline('WipePostFX');
 
-        const pipeline = reveal.getPostPipeline('WipePostFX');
+        const pipeline = reveal.getPostPipeline('WipePostFX') as WipePostFX;
 
         pipeline.setTopToBottom();
         pipeline.setRevealEffect();
