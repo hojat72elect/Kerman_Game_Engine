@@ -1,5 +1,7 @@
 import {Scene} from 'phaser';
 import {WipePostFX} from "./WipePostFX.ts";
+import {ShinePostFX} from "./ShinePostFX.ts";
+import WebGLRenderer = Phaser.Renderer.WebGL.WebGLRenderer;
 
 export class MainMenu extends Scene {
 
@@ -8,6 +10,10 @@ export class MainMenu extends Scene {
     }
 
     create() {
+        // Register custom pipelines with the renderer
+        (this.renderer as WebGLRenderer).pipelines.addPostPipeline('ShinePostFX', ShinePostFX);
+        (this.renderer as WebGLRenderer).pipelines.addPostPipeline('WipePostFX', WipePostFX);
+
         this.add.image(512, 384, 'background');
 
         const box = this.add.image(512, 384, 'box');
