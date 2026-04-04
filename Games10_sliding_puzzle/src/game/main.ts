@@ -1,7 +1,7 @@
 import {AUTO, Game, Scale, Types} from 'phaser';
 import {MainMenu} from "./MainMenu";
 import {ShinePostFX} from "./ShinePostFX.ts";
-import {WipePostFX} from "./WipePostFX";
+import {WipePostFX} from "./WipePostFX.ts";
 import {Preloader} from "./Preloader.ts";
 import {PuzzleGame} from "./Game";
 

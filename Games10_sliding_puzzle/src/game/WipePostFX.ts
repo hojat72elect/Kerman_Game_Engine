@@ -1,3 +1,7 @@
+import {Game} from "phaser";
+import WebGLTextureWrapper = Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper;
+import RenderTarget = Phaser.Renderer.WebGL.RenderTarget;
+
 const fragShader = `
 #define SHADER_NAME WIPE_FS
 
@@ -46,20 +50,20 @@ void main ()
 `;
 
 export class WipePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
-    constructor(game) {
+
+    progress = 0;
+    wipeWidth = 0.1;
+    direction = 0;
+    axis = 0;
+    reveal = 0;
+    wipeTexture: WebGLTextureWrapper;
+
+    constructor(game: Game) {
         super({
             game,
             name: 'WipePostFX',
             fragShader
         });
-
-        this.progress = 0;
-        this.wipeWidth = 0.1;
-        this.direction = 0;
-        this.axis = 0;
-        this.reveal = 0;
-
-        this.wipeTexture;
     }
 
     onBoot() {
@@ -141,7 +145,7 @@ export class WipePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
         this.set1f('uReveal', this.reveal);
     }
 
-    onDraw(renderTarget) {
+    onDraw(renderTarget: RenderTarget) {
         this.set2f('uResolution', renderTarget.width, renderTarget.height);
 
         this.bindTexture(this.wipeTexture, 1);
