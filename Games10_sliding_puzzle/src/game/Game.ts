@@ -356,7 +356,7 @@ export class PuzzleGame extends Phaser.Scene {
      * Uses a tween (see slideSpeed and slideEase for controls).
      * When complete, calls tweenOver.
      */
-    slidePiece(piece, x, y) {
+    slidePiece(piece: Image, x: number, y: number) {
         this.action = SlidingPuzzle.TWEENING;
 
         this.sound.play('move');
@@ -380,7 +380,7 @@ export class PuzzleGame extends Phaser.Scene {
 
         let outOfSequence = false;
 
-        this.pieces.each(piece => {
+        this.pieces!.each((piece: Image) => {
 
             if (piece.data.values.correctRow !== piece.data.values.row || piece.data.values.correctColumn !== piece.data.values.column) {
                 outOfSequence = true;
@@ -408,7 +408,7 @@ export class PuzzleGame extends Phaser.Scene {
                 }
             });
 
-            this.pieces.each(piece => {
+            this.pieces!.each((piece: Image) => {
                 piece.setPostPipeline('ShinePostFX');
             });
         }
@@ -441,7 +441,7 @@ export class PuzzleGame extends Phaser.Scene {
             size = 3;
         }
 
-        this.reveal = this.add.image(this.pieces.x, this.pieces.y, nextPhoto).setOrigin(0, 0);
+        this.reveal = this.add.image(this.pieces!.x, this.pieces!.y, nextPhoto).setOrigin(0, 0);
 
         this.reveal.setPostPipeline('WipePostFX');
 
